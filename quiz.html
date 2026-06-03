@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>퀴즈 | Web-Pedia</title>
+    <meta
+      name="description"
+      content="Web-Pedia의 HTML, CSS, JavaScript, 웹 보안 핵심 개념을 퀴즈로 점검합니다."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">WP</span
+          ><span>Web-<span>Pedia</span></span></a
+        >
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">PROJECT 04</p>
+        <h1>학습 점검 <span>퀴즈</span></h1>
+        <p>
+          프로젝트 4번은 퀴즈로 구성했습니다. HTML, CSS, JavaScript, 보안
+          취약점, Secure Coding 개념을 풀어보고 JavaScript로 즉시 채점 결과를
+          확인합니다.
+        </p>
+      </section>
+
+      <section class="section compact">
+        <nav
+          class="quiz-category-nav"
+          data-quiz-category-nav
+          aria-label="퀴즈 카테고리"
+        >
+          <button
+            class="quiz-cat-btn active"
+            type="button"
+            data-category="html-css"
+          >
+            HTML/CSS
+          </button>
+          <button class="quiz-cat-btn" type="button" data-category="hacking">
+            해킹 기법
+          </button>
+          <button class="quiz-cat-btn" type="button" data-category="owasp">
+            OWASP
+          </button>
+          <button
+            class="quiz-cat-btn"
+            type="button"
+            data-category="secure-coding"
+          >
+            시큐어 코딩
+          </button>
+        </nav>
+
+        <form class="quiz-form reveal" data-quiz-form>
+          <!-- ============================================================
+            [NEW] HTML/CSS 패널 — 기존 5문제를 이 패널 안으로 이동 +
+            문제 추가 및 data-explanation 속성 추가 (main.js가 해설 표시에 사용)
+            data-panel="html-css" : initQuizCategories()가 show/hide 제어
+            ============================================================ -->
+          <div data-panel="html-css">
+            <div class="quiz-section-header">📄 HTML / CSS</div>
+
+            <!-- Q1 (기존 문제 유지, data-explanation만 추가) -->
+            <article
+              class="quiz-question"
+              data-answer="q_hc_1"
+              data-correct="semantic"
+              data-explanation="header, nav, main, article 같은 시맨틱 태그는 브라우저와 검색엔진에 구조적 의미를 전달합니다. div는 의미 없는 범용 컨테이너입니다."
+            >
+              <h3>
+                문서의 의미 구조를 표현하기에 가장 적절한 HTML 태그 사용 방식은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_1" value="div" /> 모든 영역을
+                  div로만 작성한다.</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_1" value="semantic" /> header,
+                  nav, main, article 같은 시맨틱 태그를 역할에 맞게
+                  사용한다.</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_1" value="style" /> 글자
+                  크기를 키우기 위해 h1을 여러 번 사용한다.</label
+                >
+              </div>
+            </article>
+
+            <!-- Q2 (기존 문제 유지, data-explanation만 추가) -->
+            <article
+              class="quiz-question"
+              data-answer="q_hc_2"
+              data-correct="grid"
+              data-explanation="CSS Grid는 행(row)과 열(column)을 동시에 제어하는 2차원 레이아웃 시스템입니다. Flexbox는 1차원(행 또는 열)에 최적화되어 있습니다."
+            >
+              <h3>
+                여러 카드가 행과 열로 배치되는 2차원 레이아웃에 특히 적합한 CSS
+                기능은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_2" value="float" />
+                  float</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_2" value="grid" /> CSS
+                  Grid</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_2" value="color" />
+                  color</label
+                >
+              </div>
+            </article>
+
+            <!-- Q3 (기존 문제 유지, data-explanation만 추가) -->
+            <article
+              class="quiz-question"
+              data-answer="q_hc_3"
+              data-correct="event"
+              data-explanation="addEventListener('click', fn)은 DOM 요소에 이벤트 리스너를 등록하는 표준 JS 문법입니다. meta viewport나 border-radius는 HTML/CSS 속성으로 이벤트와 무관합니다."
+            >
+              <h3>
+                사용자가 버튼을 클릭했을 때 함수를 실행하도록 연결하는
+                JavaScript 문법은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_3" value="meta" /> meta
+                  viewport</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_3" value="event" />
+                  addEventListener</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_3" value="border" />
+                  border-radius</label
+                >
+              </div>
+            </article>
+
+            <!-- [NEW] Q4 ~ Q7 : 새로 추가된 HTML/CSS 문제 -->
+            <article
+              class="quiz-question"
+              data-answer="q_hc_4"
+              data-correct="html"
+              data-explanation="&lt;html&gt; 태그는 HTML 문서의 최상위(루트) 요소로, 전체 문서를 감쌉니다. &lt;body&gt;는 화면에 표시되는 콘텐츠, &lt;head&gt;는 메타 정보를 담습니다."
+            >
+              <h3>
+                전체 문서를 감싸며 웹 페이지의 기본적인 골격을 형성하는 최상위
+                태그는?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_4" value="body" />
+                  &lt;body&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_4" value="head" />
+                  &lt;head&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_4" value="html" />
+                  &lt;html&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_4" value="title" />
+                  &lt;title&gt;</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hc_5"
+              data-correct="strong"
+              data-explanation="&lt;strong&gt;은 시각적 굵기와 '중요함'이라는 의미(Semantic)를 함께 가집니다. &lt;b&gt;는 단순히 시각적으로만 굵게 표시하며 의미는 없습니다."
+            >
+              <h3>
+                시각적으로 굵게 표시하면서 '중요함'이라는 의미(Semantic)를 함께
+                내포하는 태그는?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_5" value="b" />
+                  &lt;b&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_5" value="strong" />
+                  &lt;strong&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_5" value="em" />
+                  &lt;em&gt;</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_5" value="mark" />
+                  &lt;mark&gt;</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hc_6"
+              data-correct="font-weight"
+              data-explanation="font-weight는 글자 두께를 설정합니다. font-family는 글꼴 종류, font-size는 크기, font-style은 기울기(italic)를 설정합니다."
+            >
+              <h3>글자의 두께(굵기)를 설정할 때 사용하는 CSS 속성은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hc_6" value="font-family" />
+                  font-family</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_6" value="font-size" />
+                  font-size</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_6" value="font-weight" />
+                  font-weight</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_6" value="font-style" />
+                  font-style</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hc_7"
+              data-correct="X"
+              data-explanation="h1~h6에서 숫자가 커질수록 중요도는 낮아집니다. h1이 가장 높은 중요도를 가지며 페이지 당 한 번 사용하는 것이 권장됩니다."
+            >
+              <h3>
+                [O/X] HTML5에서 제목 태그는 숫자가 커질수록 중요도가 높아진다.
+              </h3>
+              <div class="quiz-options quiz-ox-options">
+                <label
+                  ><input type="radio" name="q_hc_7" value="O" /> O
+                  (맞다)</label
+                >
+                <label
+                  ><input type="radio" name="q_hc_7" value="X" /> X
+                  (틀리다)</label
+                >
+              </div>
+            </article>
+          </div>
+          <!-- /data-panel="html-css" -->
+
+          <!-- ============================================================
+            [NEW] 해킹 기법 패널 — 전부 새로 추가
+            ============================================================ -->
+          <div data-panel="hacking" hidden>
+            <div class="quiz-section-header">🔓 해킹 기법</div>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_1"
+              data-correct="2"
+              data-explanation="SQL Injection은 악의적인 SQL 구문을 입력해 데이터베이스를 직접 조작하는 공격입니다. 공격 대상은 서버 측 데이터베이스입니다."
+            >
+              <h3>SQL Injection의 공격 대상으로 알맞은 것은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_1" value="1" />
+                  브라우저</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_1" value="2" />
+                  데이터베이스</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_1" value="3" /> 네트워크
+                  장비</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_1" value="4" />
+                  운영체제</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_2"
+              data-correct="1"
+              data-explanation="XSS는 공격자가 악성 스크립트를 웹페이지에 삽입하여, 해당 페이지를 방문한 다른 사용자의 브라우저에서 실행되도록 하는 공격입니다."
+            >
+              <h3>
+                XSS(Cross-Site Scripting)에서 악성 스크립트를 삽입하는 곳은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_2" value="1" />
+                  웹페이지</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_2" value="2" />
+                  데이터베이스</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_2" value="3" />
+                  운영체제</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_2" value="4" /> 네트워크
+                  케이블</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_3"
+              data-correct="2"
+              data-explanation="CSRF는 피해자가 로그인된 상태에서 공격자가 만든 페이지를 방문할 때, 피해자의 인증 정보로 의도치 않은 요청이 서버로 전송되는 공격입니다."
+            >
+              <h3>
+                CSRF(Cross-Site Request Forgery) 공격이 발생할 수 있는 환경은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_3" value="1" /> 로그아웃
+                  상태</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_3" value="2" /> 로그인
+                  상태</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_3" value="3" /> 서버 종료
+                  상태</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_3" value="4" /> 인터넷 차단
+                  상태</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_4"
+              data-correct="3"
+              data-explanation="업로드 취약점을 악용하면 공격자가 .php 등 실행 가능한 웹셸(Web Shell) 파일을 서버에 올려 서버를 원격 제어할 수 있습니다."
+            >
+              <h3>업로드 취약점이 발생시킬 수 있는 문제는?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_4" value="1" /> 인터넷 속도
+                  증가</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_4" value="2" /> 웹페이지
+                  디자인 변경</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_4" value="3" /> 웹셸
+                  실행</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_4" value="4" /> 자동 로그아웃
+                  발생</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_5"
+              data-correct="4"
+              data-explanation="디렉터리 트래버설(Path Traversal)은 ../를 반복 사용해 웹 루트를 벗어나 서버 내부의 민감한 파일(/etc/passwd 등)에 접근하는 공격입니다."
+            >
+              <h3>디렉터리 트래버설 공격의 접근 대상은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_5" value="1" /> 사용자
+                  인터넷</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_5" value="2" /> 사용자
+                  마우스</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_5" value="3" /> 모니터
+                  화면</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_5" value="4" /> 서버 내부
+                  파일</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_hk_6"
+              data-correct="2"
+              data-explanation="하이재킹(Session Hijacking)은 공격자가 유효한 사용자 세션 ID를 탈취하여 해당 사용자로 위장해 서버에 접근하는 공격입니다."
+            >
+              <h3>6. 하이재킹 공격이 가로채는 대상은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_hk_6" value="1" /> 서버
+                  전원</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_6" value="2" /> 사용자
+                  세션</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_6" value="3" /> 이미지
+                  파일</label
+                >
+                <label
+                  ><input type="radio" name="q_hk_6" value="4" /> 데이터베이스
+                  테이블</label
+                >
+              </div>
+            </article>
+          </div>
+          <!-- /data-panel="hacking" -->
+
+          <!-- ============================================================
+            [NEW] OWASP 패널 — 전부 새로 추가
+            ============================================================ -->
+          <div data-panel="owasp" hidden>
+            <div class="quiz-section-header">🛡️ OWASP Top 10</div>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_1"
+              data-correct="1"
+              data-explanation="Broken Access Control(취약한 접근 제어)은 OWASP Top 10 1위 항목입니다. 권한 없는 사용자가 타인의 데이터나 관리자 기능에 접근할 수 있는 결함입니다."
+            >
+              <h3>
+                권한이 없는 사용자가 타인의 데이터에 접근하거나 관리자 기능을
+                사용하는 결함은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_ow_1" value="1" /> Broken Access
+                  Control (취약한 접근 제어)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_1" value="2" /> Cryptographic
+                  Failures (암호화 실패)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_1" value="3" /> Injection
+                  (인젝션)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_1" value="4" /> Insecure
+                  Design (안전하지 않은 설계)</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_2"
+              data-correct="3"
+              data-explanation="Cryptographic Failures 방어를 위해 TLS(HTTPS) 강제 적용과 함께 Argon2 또는 bcrypt 같은 강력한 단방향 해시 알고리즘 사용이 권장됩니다. MD5·SHA-1은 이미 취약합니다."
+            >
+              <h3>
+                암호화 실패 방어를 위해 TLS 강제 적용과 함께 권장되는 강력한
+                해시 알고리즘 조합은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_ow_2" value="1" /> SHA-1 /
+                  MD5</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_2" value="2" /> PBKDF2 /
+                  RSA</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_2" value="3" /> Argon2 /
+                  bcrypt</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_2" value="4" /> AES-128 /
+                  DES</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_3"
+              data-correct="2"
+              data-explanation="Injection 공격은 악의적인 데이터가 SQL, OS 명령어 등의 인터프리터에 명령으로 실행될 때 발생합니다. Prepared Statement 사용이 핵심 방어책입니다."
+            >
+              <h3>
+                악의적인 데이터가 명령어/쿼리의 일부로 실행되어 DB를 탈취하거나
+                서버를 조작하는 공격은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_ow_3" value="1" /> Insecure
+                  Design</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_3" value="2" /> Injection
+                  (인젝션)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_3" value="3" /> Server-Side
+                  Request Forgery</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_3" value="4" /> Software and
+                  Data Integrity Failures</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_4"
+              data-correct="3"
+              data-explanation="2단계 인증(MFA)은 비밀번호가 유출되어도 계정 탈취를 막는 강력한 수단입니다. 세션 타임아웃 설정도 비활성 세션 하이재킹을 방지하는 필수 정책입니다."
+            >
+              <h3>
+                무차별 대입 공격(Brute Force)을 통한 계정 탈취에 대응하는 가장
+                적절한 보안 정책은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_ow_4" value="1" /> 디지털 서명
+                  검증 및 역직렬화 방지</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_4" value="2" /> 상세 에러
+                  메시지 비활성화 및 포트 차단</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_4" value="3" /> 2단계
+                  인증(MFA) 도입 및 세션 타임아웃 설정</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_4" value="4" /> URL
+                  화이트리스트 검증 및 내부망 접근 제한</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_5"
+              data-correct="1"
+              data-explanation="SSRF(Server-Side Request Forgery)는 서버가 공격자의 의도대로 내부망에 요청을 보내도록 유도하는 공격입니다. 입력 URL에 대한 화이트리스트 검증으로 방어합니다."
+            >
+              <h3>
+                서버 권한을 경유해 내부 폐쇄망 공격 및 정보 유출을 야기하는
+                위협의 명칭은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_ow_5" value="1" /> Server-Side
+                  Request Forgery (SSRF)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_5" value="2" /> Software and
+                  Data Integrity Failures</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_5" value="3" /> Security
+                  Logging and Monitoring Failures</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_5" value="4" /> Broken Access
+                  Control</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_6"
+              data-correct="O"
+              data-explanation="기본 관리자 계정 방치, 불필요한 포트 개방, 상세 에러 메시지 노출은 모두 Security Misconfiguration(보안 설정 오류)에 해당합니다. 에러 메시지엔 파일 경로 등 공격 힌트가 담길 수 있습니다."
+            >
+              <h3>
+                [O/X] 기본 관리자 계정을 방치하거나 불필요한 포트를 개방해 두는
+                허점은 '보안 설정 오류(Security Misconfiguration)'에 해당한다.
+              </h3>
+              <div class="quiz-options quiz-ox-options">
+                <label
+                  ><input type="radio" name="q_ow_6" value="O" /> O
+                  (맞다)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_6" value="X" /> X
+                  (틀리다)</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_ow_7"
+              data-correct="X"
+              data-explanation="문장이 모순됩니다. '로깅·모니터링을 하지 않는 상태(실패)' 자체가 침해 사고 후 원인 파악을 불가능하게 만드는 위협 요인입니다. 이를 해결하기 위해 로깅과 실시간 탐지 시스템을 구축해야 합니다."
+            >
+              <h3>
+                [O/X] 보안 로깅·모니터링 실패 상태가 지속되더라도, 실시간 침입
+                탐지 시스템을 구축해 두면 침해 사고 후 원인 파악이 불가능해지는
+                위협은 발생하지 않는다.
+              </h3>
+              <div class="quiz-options quiz-ox-options">
+                <label
+                  ><input type="radio" name="q_ow_7" value="O" /> O
+                  (맞다)</label
+                >
+                <label
+                  ><input type="radio" name="q_ow_7" value="X" /> X
+                  (틀리다)</label
+                >
+              </div>
+            </article>
+          </div>
+          <!-- /data-panel="owasp" -->
+
+          <!-- ============================================================
+            [NEW] 시큐어 코딩 패널 — 전부 새로 추가
+            ============================================================ -->
+          <div data-panel="secure-coding" hidden>
+            <div class="quiz-section-header">🔐 시큐어 코딩</div>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_1"
+              data-correct="xss-textContent"
+              data-explanation="textContent는 입력값을 순수 텍스트로만 삽입하여 HTML 태그가 실행되지 않습니다. innerHTML은 태그를 파싱·실행하므로 XSS 위험이 있고, eval은 절대 사용해선 안 됩니다."
+            >
+              <h3>
+                XSS 위험을 줄이기 위해 사용자 입력을 일반 텍스트로 출력할 때 더
+                안전한 방식은?
+              </h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_sc_1" value="xss-innerHTML" />
+                  innerHTML에 그대로 넣기</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_1" value="xss-eval" /> eval로
+                  실행하기</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_1" value="xss-textContent" />
+                  textContent로 출력하기</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_2"
+              data-correct="3"
+              data-explanation="Prepared Statement는 입력값을 SQL 명령어가 아닌 '데이터'로만 처리합니다. 악의적인 SQL 구문이 쿼리 구조를 변경하지 못하도록 근본적으로 차단합니다."
+            >
+              <h3>SQL Injection 방어에 가장 직접적으로 도움이 되는 방법은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_sc_2" value="1" /> 사용자
+                  입력값을 SQL 쿼리 문자열에 직접 연결한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_2" value="2" /> 입력값의
+                  길이를 10자로 제한한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_2" value="3" /> Prepared
+                  Statement(파라미터 바인딩)를 사용한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_2" value="4" /> 데이터베이스
+                  계정의 비밀번호를 복잡하게 설정한다</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_3"
+              data-correct="4"
+              data-explanation="CSRF Token은 서버가 발급한 예측 불가능한 값으로, 공격자는 이 값을 알 수 없어 위조 요청이 차단됩니다. POST·PUT 등 상태 변경 요청에 필수 적용합니다."
+            >
+              <h3>CSRF 공격을 방어하는 원리로 올바른 것은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_sc_3" value="1" /> 사용자
+                  비밀번호를 주기적으로 변경하게 한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_3" value="2" /> 로그인 실패
+                  횟수를 제한한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_3" value="3" /> 파일 업로드
+                  확장자를 제한한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_3" value="4" /> 서버가 발급한
+                  고유 토큰을 요청마다 검증한다</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_4"
+              data-correct="3"
+              data-explanation="HttpOnly 플래그는 JavaScript 등 스크립트에서 document.cookie로 쿠키에 접근하는 것을 차단합니다. Secure는 HTTPS 전용 전송, SameSite=Strict는 동일 사이트 요청 제한입니다."
+            >
+              <h3>쿠키의 HttpOnly 플래그를 설정했을 때의 효과는?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_sc_4" value="1" /> 쿠키가 HTTPS
+                  연결에서만 전송된다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_4" value="2" /> 쿠키의 유효
+                  기간이 세션 종료 시 자동 삭제된다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_4" value="3" /> JavaScript 등
+                  스크립트를 통한 쿠키 접근이 차단된다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_4" value="4" /> 동일 사이트
+                  요청에서만 쿠키가 전송된다</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_5"
+              data-correct="4"
+              data-explanation="블랙리스트 방식은 .php5, .phtml 같은 우회 확장자로 쉽게 뚫립니다. 허용된 확장자(.jpg, .png 등)만 통과시키는 화이트리스트 방식이 안전합니다."
+            >
+              <h3>안전한 파일 업로드를 위한 방어 전략으로 옳지 않은 것은?</h3>
+              <div class="quiz-options">
+                <label
+                  ><input type="radio" name="q_sc_5" value="1" /> 허용된
+                  확장자만 받는 화이트리스트 방식을 적용한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_5" value="2" /> 업로드된
+                  파일명을 UUID로 변경하여 저장한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_5" value="3" /> 저장
+                  디렉터리의 실행 권한을 제거한다</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_5" value="4" /> 블랙리스트
+                  방식으로 위험한 확장자만 차단한다</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_6"
+              data-correct="X"
+              data-explanation="프론트엔드에서 버튼·메뉴를 숨기는 것은 화면 UI만 감출 뿐입니다. API를 직접 호출하면 누구나 우회할 수 있으므로, 반드시 백엔드 서버에서 미들웨어를 통한 권한 검증이 필요합니다."
+            >
+              <h3>
+                [O/X] 프론트엔드에서 버튼이나 메뉴를 숨기는 것만으로도 인증 및
+                인가 처리가 충분하다.
+              </h3>
+              <div class="quiz-options quiz-ox-options">
+                <label
+                  ><input type="radio" name="q_sc_6" value="O" /> O
+                  (맞다)</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_6" value="X" /> X
+                  (틀리다)</label
+                >
+              </div>
+            </article>
+
+            <article
+              class="quiz-question"
+              data-answer="q_sc_7"
+              data-correct="O"
+              data-explanation="../를 제거하고 허용된 파일명만 통과시키는 화이트리스트 검증은 Path Traversal 공격의 핵심 방어책입니다. 두 가지를 함께 적용해야 완전한 방어가 됩니다."
+            >
+              <h3>
+                [O/X] 경로 탐색 공격(Path Traversal)을 막기 위해 ../를 제거하고,
+                허용된 파일명만 통과시키는 화이트리스트 방식을 사용해야 한다.
+              </h3>
+              <div class="quiz-options quiz-ox-options">
+                <label
+                  ><input type="radio" name="q_sc_7" value="O" /> O
+                  (맞다)</label
+                >
+                <label
+                  ><input type="radio" name="q_sc_7" value="X" /> X
+                  (틀리다)</label
+                >
+              </div>
+            </article>
+          </div>
+          <!-- /data-panel="secure-coding" -->
+
+          <button class="button primary" type="submit">퀴즈 채점하기</button>
+          <div class="quiz-result" data-quiz-result hidden></div>
+        </form>
+      </section>
+
+      <article
+        class="card reveal"
+        style="margin: 0 auto 3rem auto; width: 98%; max-width: 1050px"
+      >
+        <h3 style="margin-top: 0; margin-bottom: 0.5rem">
+          ➕ 나만의 퀴즈를 만들어 보세요!
+        </h3>
+        <p
+          style="
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted, #666);
+            font-size: 0.95rem;
+          "
+        >
+          원하는 분야를 선택하고 새로운 문제를 추가할 수 있습니다. 퀴즈가 추가된
+          분야에서는 무작위 7개가 출제됩니다.
+        </p>
+
+        <form id="custom-quiz-form" style="display: block">
+          <div style="margin-bottom: 1.25rem">
+            <label
+              for="new-quiz-cat"
+              style="display: block; font-weight: bold; margin-bottom: 0.5rem"
+              >분야 선택</label
+            >
+            <select
+              id="new-quiz-cat"
+              required
+              style="
+                padding: 0.6rem;
+                width: 100%;
+                max-width: 350px;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                background: var(--bg-card, transparent);
+                color: inherit;
+              "
+            >
+              <option value="html-css">📄 HTML/CSS</option>
+              <option value="hacking">🔓 해킹 기법</option>
+              <option value="owasp">🛡️ OWASP Top 10</option>
+              <option value="secure-coding">🔐 시큐어 코딩</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 1.25rem">
+            <label
+              for="new-quiz-title"
+              style="display: block; font-weight: bold; margin-bottom: 0.5rem"
+              >문제 내용</label
+            >
+            <input
+              type="text"
+              id="new-quiz-title"
+              placeholder="예: 웹 브라우저에서 JavaScript를 실행하는 목적은?"
+              required
+              style="
+                padding: 0.6rem;
+                width: 100%;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                background: var(--bg-card, transparent);
+                color: inherit;
+              "
+            />
+          </div>
+
+          <div style="margin-bottom: 1.25rem">
+            <span
+              style="display: block; font-weight: bold; margin-bottom: 0.5rem"
+              >보기 설정 및 정답 지정 (원하는 정답의 라디오 버튼을
+              체크하세요)</span
+            >
+            <div
+              class="quiz-options"
+              style="display: block; margin-top: 0.5rem"
+            >
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  margin-bottom: 0.5rem;
+                  width: 100%;
+                "
+              >
+                <input type="radio" name="new-correct" value="opt1" checked />
+                <input
+                  type="text"
+                  id="new-opt1"
+                  placeholder="보기 1"
+                  required
+                  style="
+                    padding: 0.5rem;
+                    flex: 1;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    background: var(--bg-card, transparent);
+                    color: inherit;
+                  "
+                />
+              </label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  margin-bottom: 0.5rem;
+                  width: 100%;
+                "
+              >
+                <input type="radio" name="new-correct" value="opt2" />
+                <input
+                  type="text"
+                  id="new-opt2"
+                  placeholder="보기 2"
+                  required
+                  style="
+                    padding: 0.5rem;
+                    flex: 1;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    background: var(--bg-card, transparent);
+                    color: inherit;
+                  "
+                />
+              </label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  margin-bottom: 0.5rem;
+                  width: 100%;
+                "
+              >
+                <input type="radio" name="new-correct" value="opt3" />
+                <input
+                  type="text"
+                  id="new-opt3"
+                  placeholder="보기 3 (선택사항)"
+                  style="
+                    padding: 0.5rem;
+                    flex: 1;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    background: var(--bg-card, transparent);
+                    color: inherit;
+                  "
+                />
+              </label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  margin-bottom: 0.5rem;
+                  width: 100%;
+                "
+              >
+                <input type="radio" name="new-correct" value="opt4" />
+                <input
+                  type="text"
+                  id="new-opt4"
+                  placeholder="보기 4 (선택사항)"
+                  style="
+                    padding: 0.5rem;
+                    flex: 1;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    background: var(--bg-card, transparent);
+                    color: inherit;
+                  "
+                />
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem">
+            <label
+              for="new-quiz-exp"
+              style="display: block; font-weight: bold; margin-bottom: 0.5rem"
+              >정답 해설 (결과 화면에 표시됨)</label
+            >
+            <textarea
+              id="new-quiz-exp"
+              placeholder="사용자가 퀴즈를 채점한 후 확인할 수 있는 정답/오답 해설을 적어주세요."
+              style="
+                padding: 0.6rem;
+                width: 100%;
+                min-height: 70px;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                background: var(--bg-card, transparent);
+                color: inherit;
+                font-family: inherit;
+                resize: vertical;
+              "
+            ></textarea>
+          </div>
+
+          <button class="button primary" type="submit">문제 추가하기</button>
+        </form>
+      </article>
+
+      <section
+        class="section compact reveal"
+        style="margin: 0 auto 2.5rem auto; width: 100%; max-width: 1100px"
+      >
+        <article class="card" style="border: 1px dashed var(--border, #cbd5e1)">
+          <h3 style="margin-bottom: 1rem; color: var(--primary, #3b82f6)">
+            🛠️ 내가 추가한 퀴즈 관리
+          </h3>
+          <p
+            style="
+              font-size: 0.9rem;
+              color: var(--muted, #64748b);
+              margin-bottom: 1.5rem;
+            "
+          >
+            아래 목록은 브라우저 저장소에 보관된 문제들입니다. 끄고 다시
+            접속해도 유지되며, 잘못 등록한 문제는 여기서 바로 삭제할 수
+            있습니다.
+          </p>
+
+          <div
+            id="my-custom-quiz-list"
+            style="display: flex; flex-direction: column; gap: 1rem"
+          >
+            <p
+              class="empty-msg"
+              style="
+                text-align: center;
+                color: var(--muted);
+                font-size: 0.9rem;
+                padding: 1rem 0;
+              "
+            >
+              아직 직접 추가한 커스텀 퀴즈가 없습니다.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="section compact">
+        <div class="grid two">
+          <article class="card reveal">
+            <h3>복습 연결</h3>
+            <p>
+              틀린 문제가 있다면 문법 카드와 보안 취약점 카드를 다시 열어 설명과
+              예시 코드를 확인하세요.
+            </p>
+            <div class="button-row">
+              <a class="button secondary" href="grammar.html">문법 복습</a>
+              <a class="button secondary" href="security.html">보안 복습</a>
+            </div>
+          </article>
+          <article class="card reveal">
+            <h3>사용된 JavaScript</h3>
+            <p>
+              퀴즈는 submit 이벤트를 막고, 선택한 radio 값을 정답과 비교한 뒤
+              점수와 카드 상태를 화면에 표시합니다.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>퀴즈</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+  </body>
+</html>

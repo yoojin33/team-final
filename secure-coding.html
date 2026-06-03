@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Coding | Web-Pedia</title>
+    <meta
+      name="description"
+      content="웹 해킹을 방어하기 위한 입력 검증, 출력 인코딩, 인증/인가, 보안 헤더 등 안전한 웹 코딩 전략을 정리합니다."
+    />
+    <meta name="fav-source" content="secure-coding" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">WP</span
+          ><span>Web-<span>Pedia</span></span></a
+        >
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">SECURE CODING</p>
+        <h1>안전한 웹 코딩 <span>체크리스트</span></h1>
+        <p>
+          보안은 마지막에 추가하는 기능이 아니라, 코드를 작성하는 순간부터 함께
+          고려해야 하는 개발 습관입니다. 아래 항목을 체크하며 방어 전략을 점검해
+          보세요.
+        </p>
+      </section>
+
+      <section class="section compact">
+        <div class="split">
+          <article class="card reveal">
+            <div class="progress-shell">
+              <div class="progress-label">
+                <span>보안 점검 진행률</span>
+                <span data-progress-label="secure">0/0 완료</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-bar" data-progress-bar="secure"></div>
+              </div>
+            </div>
+            <div class="checklist" data-checklist="secure">
+              <label class="check-item">
+                <input type="checkbox" />
+                <span>사용자 입력값은 서버에서 한 번 더 검증한다.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" />
+                <span>HTML에 출력되는 값은 문맥에 맞게 이스케이프한다.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" />
+                <span
+                  >SQL은 문자열 연결 대신 Prepared Statement를 사용한다.</span
+                >
+              </label>
+              <label class="check-item">
+                <input type="checkbox" />
+                <span>로그인 이후 모든 중요 요청에서 권한을 확인한다.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" />
+                <span
+                  >쿠키에는 HttpOnly, Secure, SameSite 옵션을 적용한다.</span
+                >
+              </label>
+              <label class="check-item">
+                <input type="checkbox" />
+                <span
+                  >에러 메시지에는 내부 경로, SQL, 스택 트레이스를 노출하지
+                  않는다.</span
+                >
+              </label>
+            </div>
+          </article>
+
+          <div class="grid">
+            <article class="card reveal">
+              <h3>입력 검증</h3>
+              <p>
+                허용할 값의 형식과 길이를 먼저 정의합니다. 금지 목록보다 허용
+                목록 방식이 더 안전합니다.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>출력 인코딩</h3>
+              <p>
+                같은 값이라도 HTML, URL, JavaScript, SQL 문맥마다 필요한 방어
+                방식이 다릅니다.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>최소 권한</h3>
+              <p>
+                사용자, 관리자, API 토큰은 필요한 범위의 권한만 갖도록
+                분리합니다.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title reveal">
+          <h2>상황별 대응 전략</h2>
+          <p>
+            취약점별로 기억해야 할 방어 포인트를 실무적인 문장으로 정리했습니다.
+          </p>
+        </div>
+        <div class="grid three">
+          <article class="card reveal" data-fav-id="secure-1">
+            <span class="number">XSS</span>
+            <h3>출력 위치를 기준으로 방어</h3>
+            <p>
+              사용자 입력을 HTML로 넣어야 한다면 신뢰할 수 있는 sanitize
+              라이브러리를 사용하고, 일반 텍스트는 textContent로 출력합니다.
+            </p>
+          </article>
+          <article class="card reveal" data-fav-id="secure-2">
+            <span class="number">SQL</span>
+            <h3>쿼리와 데이터를 분리</h3>
+            <p>
+              Prepared Statement는 입력값을 SQL 명령이 아닌 데이터로 취급하게
+              만들어 Injection 위험을 줄입니다.
+            </p>
+          </article>
+          <article class="card reveal" data-fav-id="secure-3">
+            <span class="number">AUTH</span>
+            <h3>인증과 인가를 분리</h3>
+            <p>
+              로그인 여부를 확인하는 것과 특정 리소스에 접근할 권한이 있는지
+              확인하는 것은 별개의 단계입니다.
+            </p>
+          </article>
+          <article class="card reveal" data-fav-id="secure-4">
+            <span class="number">CSRF</span>
+            <h3>요청 출처 확인</h3>
+            <p>
+              중요 상태 변경 요청에는 CSRF 토큰을 포함하고, 쿠키 SameSite 옵션을
+              함께 사용합니다.
+            </p>
+          </article>
+          <article class="card reveal" data-fav-id="secure-5">
+            <span class="number">FILE</span>
+            <h3>업로드 파일 격리</h3>
+            <p>
+              확장자, 크기, MIME 타입을 확인하고 업로드 파일은 실행 권한이 없는
+              별도 저장소에 둡니다.
+            </p>
+          </article>
+          <article class="card reveal" data-fav-id="secure-6">
+            <span class="number">LOG</span>
+            <h3>기록하되 노출하지 않기</h3>
+            <p>
+              보안 이벤트는 서버 로그에 남기고, 사용자에게는 공격자에게 힌트가
+              되지 않는 일반 메시지를 보여줍니다.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section compact">
+        <div class="lab-panel reveal" data-code-tabs>
+          <div class="panel-topbar">
+            <div class="traffic" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span>secure-patterns</span>
+          </div>
+          <div class="code-tabs" style="padding: 18px 18px 0">
+            <button class="code-tab active" type="button" data-code-tab="xss">
+              XSS 방어
+            </button>
+            <button class="code-tab" type="button" data-code-tab="sql">
+              SQLi 방어
+            </button>
+          </div>
+          <div class="code-panel active" data-code-panel="xss">
+            <button
+              class="copy-button"
+              type="button"
+              data-copy-target="#secure-xss-code"
+            >
+              복사
+            </button>
+            <pre
+              class="code-window"
+            ><code id="secure-xss-code">// 사용자 입력을 코드가 아닌 텍스트로 출력
+    const comment = document.createElement("p");
+    comment.textContent = userInput;
+    commentList.appendChild(comment);</code></pre>
+          </div>
+          <div class="code-panel" data-code-panel="sql">
+            <button
+              class="copy-button"
+              type="button"
+              data-copy-target="#secure-sql-code"
+            >
+              복사
+            </button>
+            <pre
+              class="code-window"
+            ><code id="secure-sql-code">// 예시: 입력값을 파라미터로 전달
+    const sql = "SELECT * FROM users WHERE email = ?";
+    db.query(sql, [email]);</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>안전한 웹 코딩 전략</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+  </body>
+</html>

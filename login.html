@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 | Web-Pedia</title>
+    <meta name="description" content="Web-Pedia 로그인 페이지" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+    <style>
+      /* ── 로그인 페이지 전용 스타일 ── */
+      .login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: calc(var(--nav-height) + 40px) 24px 60px;
+      }
+
+      .login-box {
+        width: 100%;
+        max-width: 420px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(20, 29, 39, 0.88);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      body.light-theme .login-box {
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      /* 상단 컬러 바 */
+      .login-box-top {
+        height: 5px;
+        background: linear-gradient(90deg, var(--cyan), var(--green));
+      }
+
+      .login-inner {
+        padding: 38px 36px 32px;
+      }
+
+      .login-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 28px;
+        text-decoration: none;
+      }
+
+      .login-title {
+        margin: 0 0 6px;
+        font-size: 1.55rem;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .login-subtitle {
+        margin: 0 0 28px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      /* 입력 필드 */
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 16px;
+      }
+
+      .field label {
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--muted);
+      }
+
+      .field input {
+        min-height: 46px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font-size: 0.95rem;
+        outline: none;
+        transition:
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      body.light-theme .field input {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .field input:focus {
+        border-color: var(--line-strong);
+        background: rgba(56, 189, 248, 0.05);
+      }
+
+      .field input.error-input {
+        border-color: rgba(251, 113, 133, 0.7);
+      }
+
+      /* 에러 메시지 */
+      .error-msg {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(251, 113, 133, 0.4);
+        border-radius: var(--radius-sm);
+        background: rgba(251, 113, 133, 0.08);
+        color: var(--red);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .error-msg.show {
+        display: flex;
+      }
+
+      /* 로그인 버튼 */
+      .login-btn {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 8px;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: var(--cyan);
+        color: #06121b;
+        font-size: 0.97rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition:
+          transform 180ms ease,
+          opacity 180ms ease;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
+
+      .login-btn:active {
+        transform: translateY(0);
+      }
+
+      /* 하단 링크 영역 */
+      .login-links {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 20px;
+        font-size: 0.85rem;
+        color: var(--muted-2);
+      }
+
+      .login-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 180ms ease;
+      }
+
+      .login-links a:hover {
+        color: var(--cyan);
+      }
+
+      .login-links .sep {
+        color: var(--line-strong);
+        user-select: none;
+      }
+
+      /* 구분선 */
+      .login-divider {
+        height: 1px;
+        background: var(--line);
+        margin: 22px 0;
+      }
+
+      /* 회원가입 / 비밀번호 찾기 모달 공통 */
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        place-items: center;
+        padding: 20px;
+        background: rgba(5, 7, 10, 0.82);
+        backdrop-filter: blur(8px);
+      }
+
+      .modal-backdrop.open {
+        display: grid;
+        animation: modalFadeIn 220ms ease forwards;
+      }
+
+      .modal-box {
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(20, 29, 39, 0.96);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        animation: modalSlideUp 280ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+
+      body.light-theme .modal-box {
+        background: rgba(255, 255, 255, 0.97);
+      }
+
+      .modal-top {
+        height: 4px;
+        background: linear-gradient(90deg, var(--cyan), var(--green));
+      }
+
+      .modal-inner {
+        padding: 30px 28px 26px;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+
+      .modal-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 900;
+      }
+
+      .modal-close {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          border-color 180ms ease,
+          color 180ms ease;
+      }
+
+      .modal-close:hover {
+        border-color: var(--line-strong);
+        color: var(--text);
+      }
+
+      .modal-btn {
+        width: 100%;
+        min-height: 46px;
+        margin-top: 10px;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: var(--cyan);
+        color: #06121b;
+        font-size: 0.93rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition:
+          transform 180ms ease,
+          opacity 180ms ease;
+      }
+
+      .modal-btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
+
+      /* 성공 상태 */
+      .success-msg {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(74, 222, 128, 0.4);
+        border-radius: var(--radius-sm);
+        background: rgba(74, 222, 128, 0.08);
+        color: var(--green);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .success-msg.show {
+        display: flex;
+      }
+
+      /* 비밀번호 찾기 힌트 박스 */
+      .hint-box {
+        display: none;
+        padding: 14px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-sm);
+        background: rgba(56, 189, 248, 0.07);
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin-top: 10px;
+        line-height: 1.6;
+      }
+
+      .hint-box.show {
+        display: block;
+      }
+
+      .hint-box strong {
+        color: var(--cyan);
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes modalSlideUp {
+        from {
+          transform: translateY(24px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">WP</span>
+          <span>Web-<span>Pedia</span></span>
+        </a>
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="login-page">
+      <div class="login-box">
+        <div class="login-box-top"></div>
+        <div class="login-inner">
+          <a class="login-brand" href="index.html">
+            <span class="brand-mark">WP</span>
+            <span style="font-weight: 900"
+              >Web-<span style="color: var(--cyan)">Pedia</span></span
+            >
+          </a>
+
+          <h1 class="login-title">로그인</h1>
+          <p class="login-subtitle">
+            학습 기록과 즐겨찾기를 저장하려면 로그인하세요.
+          </p>
+
+          <div class="error-msg" id="login-error" role="alert">
+            <span>⚠</span>
+            <span id="login-error-text"
+              >아이디 또는 비밀번호가 올바르지 않습니다.</span
+            >
+          </div>
+
+          <div class="field">
+            <label for="login-username">아이디</label>
+            <input
+              type="text"
+              id="login-username"
+              placeholder="아이디를 입력하세요"
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="field">
+            <label for="login-password">비밀번호</label>
+            <input
+              type="password"
+              id="login-password"
+              placeholder="비밀번호를 입력하세요"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button class="login-btn" id="btn-login" type="button">로그인</button>
+
+          <div class="login-divider"></div>
+
+          <div class="login-links">
+            <a href="#" id="open-signup">회원가입</a>
+            <span class="sep">|</span>
+            <a href="#" id="open-forgot">비밀번호 찾기</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 회원가입 모달 -->
+    <div
+      class="modal-backdrop"
+      id="signup-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="회원가입"
+    >
+      <div class="modal-box">
+        <div class="modal-top"></div>
+        <div class="modal-inner">
+          <div class="modal-header">
+            <h2>회원가입</h2>
+            <button
+              class="modal-close"
+              id="close-signup"
+              type="button"
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+
+          <div class="success-msg" id="signup-success" role="status">
+            <span>✓</span>
+            <span>가입 완료! 이제 로그인할 수 있습니다.</span>
+          </div>
+
+          <div class="error-msg" id="signup-error" role="alert">
+            <span>⚠</span>
+            <span id="signup-error-text">이미 사용 중인 아이디입니다.</span>
+          </div>
+
+          <div class="field">
+            <label for="signup-username">아이디</label>
+            <input
+              type="text"
+              id="signup-username"
+              placeholder="사용할 아이디를 입력하세요"
+            />
+          </div>
+
+          <div class="field">
+            <label for="signup-password">비밀번호</label>
+            <input
+              type="password"
+              id="signup-password"
+              placeholder="비밀번호 (6자 이상)"
+            />
+          </div>
+
+          <div class="field">
+            <label for="signup-confirm">비밀번호 확인</label>
+            <input
+              type="password"
+              id="signup-confirm"
+              placeholder="비밀번호를 다시 입력하세요"
+            />
+          </div>
+
+          <button class="modal-btn" id="btn-signup" type="button">
+            가입하기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 비밀번호 찾기 모달 -->
+    <div
+      class="modal-backdrop"
+      id="forgot-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="비밀번호 찾기"
+    >
+      <div class="modal-box">
+        <div class="modal-top"></div>
+        <div class="modal-inner">
+          <div class="modal-header">
+            <h2>비밀번호 찾기</h2>
+            <button
+              class="modal-close"
+              id="close-forgot"
+              type="button"
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+
+          <p style="color: var(--muted); font-size: 0.88rem; margin: 0 0 18px">
+            가입 시 사용한 아이디를 입력하면 저장된 비밀번호 힌트를 확인할 수
+            있습니다.
+          </p>
+
+          <div class="error-msg" id="forgot-error" role="alert">
+            <span>⚠</span>
+            <span>존재하지 않는 아이디입니다.</span>
+          </div>
+
+          <div class="field">
+            <label for="forgot-username">아이디</label>
+            <input
+              type="text"
+              id="forgot-username"
+              placeholder="아이디를 입력하세요"
+            />
+          </div>
+
+          <div class="hint-box" id="forgot-hint"></div>
+
+          <button class="modal-btn" id="btn-forgot" type="button">확인</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── 로그인/회원가입/비밀번호 찾기 로직 ──
+
+      // 유틸: localStorage 사용자 DB
+      function getUsers() {
+        return JSON.parse(localStorage.getItem('wp-users')) || {}
+      }
+      function saveUsers(users) {
+        localStorage.setItem('wp-users', JSON.stringify(users))
+      }
+
+      // 에러/성공 표시 헬퍼
+      function showError(el, textEl, msg) {
+        if (textEl) textEl.textContent = msg
+        el.classList.add('show')
+      }
+      function hideError(el) {
+        el.classList.remove('show')
+      }
+
+      // ── 로그인 ──
+      const btnLogin = document.getElementById('btn-login')
+      const loginError = document.getElementById('login-error')
+      const loginErrorText = document.getElementById('login-error-text')
+      const inputId = document.getElementById('login-username')
+      const inputPw = document.getElementById('login-password')
+
+      function doLogin() {
+        hideError(loginError)
+        const id = inputId.value.trim()
+        const pw = inputPw.value
+
+        if (!id || !pw) {
+          showError(
+            loginError,
+            loginErrorText,
+            '아이디와 비밀번호를 모두 입력해주세요.',
+          )
+          return
+        }
+
+        const users = getUsers()
+        if (!users[id] || users[id].password !== pw) {
+          showError(
+            loginError,
+            loginErrorText,
+            '아이디 또는 비밀번호가 올바르지 않습니다.',
+          )
+          inputPw.value = ''
+          inputPw.focus()
+          return
+        }
+
+        // 로그인 성공 → 세션 저장 후 홈으로
+        localStorage.setItem('wp-logged-in-user', id)
+        window.location.href = 'index.html'
+      }
+
+      btnLogin.addEventListener('click', doLogin)
+      ;[inputId, inputPw].forEach((el) =>
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') doLogin()
+        }),
+      )
+
+      // ── 모달 열기/닫기 ──
+      function openModal(id) {
+        document.getElementById(id).classList.add('open')
+        document.body.style.overflow = 'hidden'
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('open')
+        document.body.style.overflow = ''
+      }
+
+      document.getElementById('open-signup').addEventListener('click', (e) => {
+        e.preventDefault()
+        openModal('signup-modal')
+      })
+      document
+        .getElementById('close-signup')
+        .addEventListener('click', () => closeModal('signup-modal'))
+
+      document.getElementById('open-forgot').addEventListener('click', (e) => {
+        e.preventDefault()
+        openModal('forgot-modal')
+      })
+      document
+        .getElementById('close-forgot')
+        .addEventListener('click', () => closeModal('forgot-modal'))
+
+      // 모달 배경 클릭 시 닫기
+      ;['signup-modal', 'forgot-modal'].forEach((id) => {
+        document.getElementById(id).addEventListener('click', (e) => {
+          if (e.target === e.currentTarget) closeModal(id)
+        })
+      })
+
+      // ESC 키로 닫기
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal('signup-modal')
+          closeModal('forgot-modal')
+        }
+      })
+
+      // ── 회원가입 ──
+      const signupError = document.getElementById('signup-error')
+      const signupErrorText = document.getElementById('signup-error-text')
+      const signupSuccess = document.getElementById('signup-success')
+
+      document.getElementById('btn-signup').addEventListener('click', () => {
+        hideError(signupError)
+        signupSuccess.classList.remove('show')
+
+        const id = document.getElementById('signup-username').value.trim()
+        const pw = document.getElementById('signup-password').value
+        const pw2 = document.getElementById('signup-confirm').value
+
+        if (!id) {
+          showError(signupError, signupErrorText, '아이디를 입력해주세요.')
+          return
+        }
+        if (pw.length < 6) {
+          showError(
+            signupError,
+            signupErrorText,
+            '비밀번호는 6자 이상이어야 합니다.',
+          )
+          return
+        }
+        if (pw !== pw2) {
+          showError(
+            signupError,
+            signupErrorText,
+            '비밀번호가 일치하지 않습니다.',
+          )
+          return
+        }
+
+        const users = getUsers()
+        if (users[id]) {
+          showError(
+            signupError,
+            signupErrorText,
+            '이미 사용 중인 아이디입니다.',
+          )
+          return
+        }
+
+        users[id] = { password: pw, joinedAt: new Date().toISOString() }
+        saveUsers(users)
+        signupSuccess.classList.add('show')
+
+        // 입력 필드 초기화
+        ;['signup-username', 'signup-password', 'signup-confirm'].forEach(
+          (fid) => {
+            document.getElementById(fid).value = ''
+          },
+        )
+
+        // 2초 후 자동으로 로그인 필드에 아이디 채워주기
+        setTimeout(() => {
+          closeModal('signup-modal')
+          inputId.value = id
+          inputPw.focus()
+        }, 1800)
+      })
+
+      // ── 비밀번호 찾기 ──
+      const forgotError = document.getElementById('forgot-error')
+      const forgotHint = document.getElementById('forgot-hint')
+
+      document.getElementById('btn-forgot').addEventListener('click', () => {
+        hideError(forgotError)
+        forgotHint.classList.remove('show')
+
+        const id = document.getElementById('forgot-username').value.trim()
+        if (!id) {
+          showError(forgotError, null, '아이디를 입력해주세요.')
+          forgotError.querySelector('span:last-child').textContent =
+            '아이디를 입력해주세요.'
+          return
+        }
+
+        const users = getUsers()
+        if (!users[id]) {
+          showError(forgotError, null, '존재하지 않는 아이디입니다.')
+          forgotError.querySelector('span:last-child').textContent =
+            '존재하지 않는 아이디입니다.'
+          return
+        }
+
+        // 비밀번호 앞 2자리만 힌트로 표시
+        const pw = users[id].password
+        const hint = pw.substring(0, 2) + '*'.repeat(pw.length - 2)
+        forgotHint.innerHTML = `아이디 <strong>${id}</strong>의 비밀번호 힌트: <strong>${hint}</strong>`
+        forgotHint.classList.add('show')
+      })
+
+      // 이미 로그인된 경우 홈으로 리다이렉트
+      if (localStorage.getItem('wp-logged-in-user')) {
+        window.location.href = 'index.html'
+      }
+    </script>
+  </body>
+</html>

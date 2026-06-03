@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>보안 취약점 | Web-Pedia</title>
+    <meta
+      name="description"
+      content="XSS, SQL Injection, CSRF 등 대표적인 웹 보안 취약점의 원리와 방어 전략을 소개합니다."
+    />
+    <meta name="fav-source" content="security" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">WP</span
+          ><span>Web-<span>Pedia</span></span></a
+        >
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">WEB SECURITY</p>
+        <h1>웹 해킹 기법과 <span>공격 원리</span></h1>
+        <p>
+          웹 보안은 공격 도구를 외우는 일이 아니라, 사용자의 입력이 서버와
+          브라우저에서 어떻게 처리되는지 추적하는 일에서 시작됩니다.
+        </p>
+      </section>
+
+      <section class="section compact">
+        <div class="toolbar reveal" data-filter-group="security">
+          <input
+            class="search-box"
+            type="search"
+            placeholder="취약점 검색: XSS, SQL, 인증, 권한..."
+            data-search="security"
+            aria-label="보안 취약점 검색"
+          />
+          <button class="filter-button active" type="button" data-filter="all">
+            전체
+          </button>
+          <button class="filter-button" type="button" data-filter="input">
+            입력값
+          </button>
+          <button class="filter-button" type="button" data-filter="session">
+            세션
+          </button>
+          <button class="filter-button" type="button" data-filter="access">
+            권한
+          </button>
+        </div>
+
+        <div class="grid three">
+          <details
+            data-fav-id="security-1"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="input"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">XSS</span
+                ><span class="tag">브라우저</span>
+              </div>
+              <h3>Cross-Site Scripting</h3>
+              <p>
+                검증되지 않은 입력이 HTML로 출력될 때 악성 스크립트가 실행되는
+                취약점입니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                댓글, 검색어, 프로필 이름 같은 입력값이 HTML로 해석되면 공격자가
+                작성한 script가 다른 사용자의 브라우저에서 실행될 수 있습니다.
+              </p>
+              <pre><code>// 위험
+result.innerHTML = userInput;
+
+// 방어
+result.textContent = userInput;</code></pre>
+              <p>
+                대응: 출력 인코딩, HTML sanitize, Content Security Policy, 쿠키
+                HttpOnly 설정.
+              </p>
+            </div>
+          </details>
+          <details
+            data-fav-id="security-2"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="input"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">SQLi</span
+                ><span class="tag">데이터베이스</span>
+              </div>
+              <h3>SQL Injection</h3>
+              <p>
+                사용자 입력이 SQL 문장에 직접 합쳐질 때 쿼리 구조가 변조되는
+                공격입니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                로그인 폼의 아이디나 검색어가 SQL 문자열에 그대로 연결되면
+                조건식이 변조되어 인증 우회나 데이터 유출이 발생할 수 있습니다.
+              </p>
+              <pre><code>// 위험
+sql = "SELECT * FROM users WHERE id = '" + id + "'";
+
+// 방어
+sql = "SELECT * FROM users WHERE id = ?";
+db.query(sql, [id]);</code></pre>
+              <p>
+                대응: Prepared Statement, 입력값 형식 검증, DB 계정 최소 권한.
+              </p>
+            </div>
+          </details>
+          <details
+            data-fav-id="security-3"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="session"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">CSRF</span
+                ><span class="tag">요청 위조</span>
+              </div>
+              <h3>Cross-Site Request Forgery</h3>
+              <p>
+                로그인된 사용자의 권한을 이용해 원치 않는 요청을 보내게 만드는
+                공격입니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                사용자가 로그인한 상태에서 악성 페이지를 방문하면, 브라우저가
+                쿠키를 자동으로 포함해 상태 변경 요청을 보낼 수 있습니다.
+              </p>
+              <pre><code>&lt;form action="https://site.example/delete" method="POST"&gt;
+  &lt;input name="postId" value="10"&gt;
+&lt;/form&gt;</code></pre>
+              <p>대응: CSRF 토큰, SameSite 쿠키, 중요 요청 재인증.</p>
+            </div>
+          </details>
+          <details
+            data-fav-id="security-4"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="access"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">Access</span
+                ><span class="tag">권한</span>
+              </div>
+              <h3>Broken Access Control</h3>
+              <p>
+                URL이나 파라미터만 바꿔 다른 사용자의 데이터에 접근할 수 있는
+                문제입니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                서버가 “로그인했는가”만 확인하고 “이 데이터의 소유자인가”를
+                확인하지 않으면 다른 사용자의 리소스를 볼 수 있습니다.
+              </p>
+              <pre><code>// 위험한 패턴
+GET /orders/1024
+
+// 서버에서 반드시 확인
+if (order.userId !== loginUser.id) {
+  return 403;
+}</code></pre>
+              <p>
+                대응: 객체 단위 권한 확인, 관리자 기능 서버 검증, 기본 거부
+                정책.
+              </p>
+            </div>
+          </details>
+          <details
+            data-fav-id="security-5"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="session"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">Auth</span><span class="tag">인증</span>
+              </div>
+              <h3>인증 실패</h3>
+              <p>
+                약한 비밀번호 정책, 세션 만료 미흡, 로그인 시도 제한 부재는 계정
+                탈취 위험을 높입니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                무차별 대입, 세션 고정, 예측 가능한 토큰은 공격자가 계정 접근
+                권한을 얻는 통로가 됩니다.
+              </p>
+              <pre><code>Set-Cookie: session=...; HttpOnly; Secure; SameSite=Lax</code></pre>
+              <p>
+                대응: 강한 비밀번호 저장 해시, MFA, 로그인 제한, 안전한 쿠키
+                옵션.
+              </p>
+            </div>
+          </details>
+          <details
+            data-fav-id="security-6"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="security"
+            data-category="input access"
+            data-search-item="security"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag warn">Upload</span
+                ><span class="tag">파일</span>
+              </div>
+              <h3>위험한 파일 업로드</h3>
+              <p>
+                확장자와 MIME 타입, 저장 경로, 실행 권한을 검증하지 않으면
+                서버에서 악성 파일이 실행될 수 있습니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>공격 원리</h4>
+              <p>
+                공격자가 스크립트 파일을 이미지처럼 업로드하고 서버가 이를 실행
+                가능한 위치에 저장하면 원격 코드 실행으로 이어질 수 있습니다.
+              </p>
+              <pre><code>// 점검 항목
+허용 확장자만 받기
+파일 크기 제한
+업로드 경로 실행 권한 제거
+파일명 랜덤화</code></pre>
+              <p>
+                대응: 허용 목록 검증, 저장소 분리, 바이러스 검사, 다운로드 시
+                Content-Disposition 사용.
+              </p>
+            </div>
+          </details>
+        </div>
+        <p class="source-note reveal">
+          참고 기준:
+          <a
+            href="https://owasp.org/Top10/2021/"
+            target="_blank"
+            rel="noreferrer"
+            >OWASP Top 10:2021</a
+          >,
+          <a
+            href="https://owasp.org/Top10/2021/A03_2021-Injection/"
+            target="_blank"
+            rel="noreferrer"
+            >OWASP A03 Injection</a
+          >
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="split">
+          <div class="section-title reveal">
+            <h2>공격 흐름을 읽는 방법</h2>
+            <p>
+              취약점은 대부분 입력, 처리, 출력, 권한 확인 중 하나가 빠졌을 때
+              발생합니다.
+            </p>
+            <div class="button-row">
+              <a class="button primary" href="secure-coding.html"
+                >방어 전략 보기</a
+              >
+              <a class="button secondary" href="security-OWASP.html"
+                >OWASP Top 10</a
+              >
+            </div>
+          </div>
+          <div class="timeline reveal">
+            <article class="timeline-item">
+              <strong>INPUT</strong>
+              <div>
+                <h3>신뢰할 수 없는 입력 수집</h3>
+                <p>
+                  폼, URL 파라미터, 쿠키, 헤더, 파일은 모두 조작될 수 있는
+                  데이터로 가정합니다.
+                </p>
+              </div>
+            </article>
+            <article class="timeline-item">
+              <strong>LOGIC</strong>
+              <div>
+                <h3>검증 없이 비즈니스 로직 실행</h3>
+                <p>
+                  권한 확인이나 형식 검사가 빠지면 의도하지 않은 데이터 조회와
+                  변경이 가능합니다.
+                </p>
+              </div>
+            </article>
+            <article class="timeline-item">
+              <strong>OUTPUT</strong>
+              <div>
+                <h3>출력 단계에서 코드로 해석</h3>
+                <p>
+                  HTML, JavaScript, SQL, Shell처럼 실행 의미가 있는 문맥에서는
+                  반드시 이스케이프가 필요합니다.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section compact reveal" id="xss-simulator-section">
+        <div class="section-title">
+          <h2>실시간 XSS 공방 Sandbox Lab</h2>
+          <p>
+            입력값이 어떻게 처리되는가에 따라 브라우저에서 스크립트가 실행되는
+            해킹 사고와 이를 막는 안전한 출력의 원리를 눈으로 보며 체험하세요.
+          </p>
+        </div>
+
+        <div class="card simulator-card">
+          <div class="simulator-layout">
+            <!-- 왼쪽: 제어 보드 -->
+            <div class="sim-control">
+              <h3>1. 악성 페이로드 작성</h3>
+              <p class="sim-help">
+                악성 코드를 직접 기입하거나 아래의 템플릿 버튼을 클릭하세요.
+              </p>
+
+              <div class="template-row">
+                <button
+                  class="small-link template-btn"
+                  data-template="alert"
+                  type="button"
+                >
+                  기본 경고창
+                </button>
+                <button
+                  class="small-link template-btn"
+                  data-template="img"
+                  type="button"
+                >
+                  우회 이미지
+                </button>
+                <button
+                  class="small-link template-btn"
+                  data-template="cookie"
+                  type="button"
+                >
+                  세션쿠키 탈취
+                </button>
+              </div>
+
+              <textarea
+                class="sim-textarea"
+                id="xss-input"
+                aria-label="XSS 공격 쿼리 입력"
+                placeholder="이곳에 HTML 코드나 스크립트를 입력해보세요..."
+              ></textarea>
+
+              <div class="sim-actions">
+                <button
+                  class="button button-danger"
+                  id="btn-unsafe"
+                  type="button"
+                >
+                  😈 취약 모드 (innerHTML)
+                </button>
+                <button
+                  class="button button-success"
+                  id="btn-safe"
+                  type="button"
+                >
+                  🛡️ 안전 모드 (textContent)
+                </button>
+              </div>
+            </div>
+
+            <!-- 오른쪽: 실시간 렌더링 결과 보드 -->
+            <div class="sim-preview">
+              <h3>2. 브라우저 실시간 주입 결과</h3>
+              <p class="sim-help">
+                선택한 모드에 따라 브라우저의 DOM 트리에 실제로 삽입된 최종
+                화면입니다.
+              </p>
+
+              <div class="render-output" id="xss-output-box">
+                <span style="color: var(--muted-2)"
+                  >[아직 실행되지 않음. 왼쪽에서 모드를 실행하세요]</span
+                >
+              </div>
+
+              <div class="sim-console" id="xss-console">
+                <strong>모의 진단 콘솔:</strong>
+                <span id="xss-log-text">대기 중...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 가상 해킹 경고 모달 레이어 -->
+        <div class="hacker-modal" id="hacker-alert" hidden>
+          <div class="hacker-modal-content">
+            <div class="hacker-icon">⚠️</div>
+            <h3>[경고] XSS 공격 성공!</h3>
+            <p>
+              검증되지 않은 사용자의 입력값이 브라우저 컨텍스트에서 실행 가능한
+              스크립트로 동작했습니다.
+            </p>
+            <p class="hacker-warn-detail">
+              세션 식별자(Cookie) 강제 수집, 페이지 변조, 사용자 권한 도용이
+              가능합니다.
+            </p>
+            <button class="button primary" id="btn-close-hacker" type="button">
+              공격 분석 및 복원
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section compact reveal" id="sqli-simulator-section">
+        <div class="section-title">
+          <h2>실시간 SQL Injection Sandbox Lab</h2>
+          <p>
+            입력창에 악성 구문을 주입할 때의 데이터베이스 쿼리 구조 변조(로그인
+            인증 우회)와, Prepared Statement 방어 메커니즘을 체험하세요.
+          </p>
+        </div>
+
+        <div class="card simulator-card">
+          <div class="simulator-layout">
+            <!-- 왼쪽: 제어반 (로그인 폼) -->
+            <div class="sim-control">
+              <h3>1. 가상 로그인 양식 & 페이로드</h3>
+              <p class="sim-help">
+                ID 입력창에 SQL Injection 구문을 넣거나 템플릿 칩을 선택해
+                보세요.
+              </p>
+
+              <div class="template-row">
+                <button
+                  class="small-link template-btn"
+                  data-sqli-template="bypass"
+                  type="button"
+                >
+                  인증 우회 (admin' --)
+                </button>
+                <button
+                  class="small-link template-btn"
+                  data-sqli-template="always"
+                  type="button"
+                >
+                  항상 참 (' OR '1'='1)
+                </button>
+              </div>
+
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 8px;
+                  margin: 4px 0;
+                "
+              >
+                <input
+                  class="search-box"
+                  id="sqli-id"
+                  type="text"
+                  placeholder="로그인 아이디 입력"
+                  aria-label="로그인 아이디 입력"
+                />
+                <input
+                  class="search-box"
+                  id="sqli-pw"
+                  type="password"
+                  placeholder="비밀번호 입력 (SQLi 체험 시 비워두셔도 됩니다)"
+                  aria-label="비밀번호 입력"
+                  value="••••••••"
+                  disabled
+                />
+              </div>
+
+              <div class="sim-actions">
+                <button
+                  class="button button-danger"
+                  id="btn-sqli-unsafe"
+                  type="button"
+                >
+                  😈 취약 모드 (문자열 결합 SQL)
+                </button>
+                <button
+                  class="button button-success"
+                  id="btn-sqli-safe"
+                  type="button"
+                >
+                  🛡️ 안전 모드 (Prepared Statement)
+                </button>
+              </div>
+            </div>
+
+            <!-- 오른쪽: 실시간 생성된 쿼리 및 DB 결과 보드 -->
+            <div class="sim-preview">
+              <h3>2. 실시간 생성된 SQL 쿼리 & DB 진단</h3>
+              <p class="sim-help">
+                입력값에 따라 서버에서 완성된 SQL 쿼리문 구조와 가상 DB 검색
+                결과입니다.
+              </p>
+
+              <div
+                class="render-output"
+                id="sqli-output-box"
+                style="
+                  font-family: var(--mono);
+                  font-size: 0.84rem;
+                  line-height: 1.6;
+                "
+              >
+                <span style="color: var(--muted-2)"
+                  >[아직 실행되지 않음. 로그인 모드를 작동시키세요]</span
+                >
+              </div>
+
+              <div class="sim-console" id="sqli-console">
+                <strong>가상 DB 엔진 로그:</strong>
+                <span id="sqli-log-text">대기 중...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 가상 DB 해킹 성공 경고 모달 -->
+        <div class="hacker-modal" id="sqli-hacker-alert" hidden>
+          <div
+            class="hacker-modal-content"
+            style="
+              border-color: rgba(251, 113, 133, 0.6);
+              box-shadow: 0 24px 70px rgba(251, 113, 133, 0.3);
+            "
+          >
+            <div class="hacker-icon" style="color: var(--red)">🔓</div>
+            <h3>[경고] SQL Injection 로그인 우회 성공!</h3>
+            <p>
+              패스워드 검증 쿼리문이 주석(<code>--</code>) 처리되거나
+              조건식(<code>OR '1'='1</code>) 변조로 인해 데이터베이스 인증이
+              강제 무력화되었습니다.
+            </p>
+            <p class="hacker-warn-detail">
+              최고 관리자(admin) 계정 강제 로그인 권한 유출 및 중요 사용자 DB
+              전체 조회가 완료되었습니다.
+            </p>
+            <button class="button primary" id="btn-close-sqli" type="button">
+              취약 쿼리 분석 및 닫기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section compact">
+        <div class="lab-panel reveal">
+          <div class="panel-topbar">
+            <div class="traffic" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span>unsafe-vs-safe</span>
+          </div>
+          <pre
+            class="code-window"
+          ><code><span class="token-warn">// 위험: 입력값을 그대로 HTML에 삽입</span>
+commentArea.innerHTML = userComment;
+ 
+<span class="token-attr">// 안전: 텍스트로만 출력되도록 처리</span>
+commentArea.textContent = userComment;
+ 
+<span class="token-warn">// 위험: 문자열 연결로 SQL 생성</span>
+query = "SELECT * FROM users WHERE id = " + userId;
+ 
+<span class="token-attr">// 안전: Prepared Statement 사용</span>
+query = "SELECT * FROM users WHERE id = ?";</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>웹 해킹 기법 및 원리 정리</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+  </body>
+</html>

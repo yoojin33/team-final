@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오답노트 | Web-Pedia</title>
+    <meta name="description" content="퀴즈에서 틀린 문제를 다시 풀어보세요." />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+    <style>
+      /* 오답노트 전용 스타일 */
+      .wn-empty {
+        text-align: center;
+        padding: 72px 24px;
+        color: var(--muted);
+      }
+      .wn-empty-icon {
+        font-size: 3.5rem;
+        margin-bottom: 18px;
+        line-height: 1;
+      }
+      .wn-empty p {
+        margin: 6px 0;
+      }
+
+      /* 문제 카드 */
+      .wn-question {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 28px 30px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow);
+        border-top: 4px solid var(--red);
+        transition: border-color 200ms;
+      }
+      .wn-question.correct {
+        border-top-color: var(--green);
+      }
+      .wn-question.wrong {
+        border-top-color: var(--red);
+      }
+
+      .wn-question h3 {
+        margin: 0 0 18px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .wn-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .wn-options label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 0.92rem;
+        transition:
+          background 150ms,
+          border-color 150ms;
+      }
+      .wn-options label:hover {
+        background: rgba(56, 189, 248, 0.06);
+        border-color: var(--line-strong);
+      }
+      .wn-options label.is-correct {
+        border-color: var(--green);
+        background: rgba(74, 222, 128, 0.08);
+      }
+      .wn-options label.is-wrong {
+        border-color: var(--red);
+        background: rgba(251, 113, 133, 0.08);
+      }
+
+      /* 뱃지 */
+      .wn-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 900;
+        margin-bottom: 12px;
+      }
+      .wn-badge.correct {
+        background: rgba(74, 222, 128, 0.15);
+        color: var(--green);
+      }
+      .wn-badge.wrong {
+        background: rgba(251, 113, 133, 0.15);
+        color: var(--red);
+      }
+
+      /* 해설 박스 */
+      .wn-explanation {
+        margin-top: 12px;
+        padding: 12px 16px;
+        border-left: 3px solid var(--cyan);
+        background: rgba(56, 189, 248, 0.06);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* 결과 바 */
+      .wn-result {
+        padding: 20px 24px;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: var(--card);
+        margin-bottom: 28px;
+        font-size: 0.95rem;
+        display: none;
+      }
+      .wn-result.show {
+        display: block;
+      }
+
+      /* 채점 버튼 */
+      .wn-submit-row {
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+      }
+
+      /* 번호 뱃지 */
+      .wn-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(251, 113, 133, 0.15);
+        color: var(--red);
+        font-size: 0.78rem;
+        font-weight: 900;
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">WP</span>
+          <span>Web-<span>Pedia</span></span>
+        </a>
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">WRONG NOTES</p>
+        <h1>오답 <span>노트</span></h1>
+        <p>퀴즈에서 틀렸던 문제들을 무작위로 다시 풀어볼 수 있습니다.</p>
+      </section>
+
+      <section class="section compact">
+        <!-- 오답 없음 상태 -->
+        <div class="wn-empty" id="wn-empty" hidden>
+          <div class="wn-empty-icon">✅</div>
+          <p style="font-weight: 800; font-size: 1.05rem">
+            저장된 오답이 없습니다.
+          </p>
+          <p style="color: var(--muted-2); font-size: 0.88rem; margin-top: 4px">
+            퀴즈를 먼저 풀고 돌아오세요.
+          </p>
+          <div
+            class="button-row"
+            style="justify-content: center; margin-top: 20px"
+          >
+            <a class="button primary" href="quiz.html">퀴즈 풀러 가기</a>
+          </div>
+        </div>
+
+        <!-- 오답 문제 영역 -->
+        <div id="wn-content" hidden>
+          <!-- 카테고리 탭 -->
+          <div
+            class="fav-tab-row reveal"
+            id="wn-tabs"
+            style="margin-bottom: 24px"
+          ></div>
+
+          <div class="wn-result reveal" id="wn-result"></div>
+
+          <form id="wn-form" novalidate>
+            <div id="wn-questions"></div>
+            <div class="wn-submit-row">
+              <button class="button primary" type="submit" id="wn-submit">
+                채점하기
+              </button>
+            </div>
+          </form>
+
+          <div
+            class="button-row"
+            style="justify-content: center; margin-top: 28px; gap: 12px"
+            id="wn-actions"
+            hidden
+          >
+            <button class="button secondary" type="button" id="wn-retry">
+              다시 풀기
+            </button>
+            <a class="button secondary" href="quiz.html">퀴즈로 돌아가기</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>오답노트</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+
+    <script>
+      const CAT_LABEL = {
+        'html-css': 'HTML / CSS',
+        hacking: '해킹 기법',
+        owasp: 'OWASP',
+        'secure-coding': '시큐어 코딩',
+      }
+      const CAT_ORDER = ['html-css', 'hacking', 'owasp', 'secure-coding']
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;')
+      }
+
+      function shuffle(arr) {
+        const a = [...arr]
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[a[i], a[j]] = [a[j], a[i]]
+        }
+        return a
+      }
+
+      let allWrong = []
+      let currentFilter = 'all'
+      let currentQuestions = []
+
+      // ── 탭 렌더 ──
+      function renderTabs() {
+        const tabRow = document.getElementById('wn-tabs')
+        tabRow.innerHTML = ''
+
+        // 전체 버튼
+        const allBtn = document.createElement('button')
+        allBtn.className =
+          'fav-tab' + (currentFilter === 'all' ? ' active' : '')
+        allBtn.type = 'button'
+        allBtn.textContent = `전체 (${allWrong.length})`
+        allBtn.addEventListener('click', () => switchTab('all'))
+        tabRow.appendChild(allBtn)
+
+        // 카테고리별 버튼 (문제 있는 것만)
+        CAT_ORDER.forEach((cat) => {
+          const count = allWrong.filter((q) => q.category === cat).length
+          if (count === 0) return
+          const btn = document.createElement('button')
+          btn.className = 'fav-tab' + (currentFilter === cat ? ' active' : '')
+          btn.type = 'button'
+          btn.textContent = `${CAT_LABEL[cat]} (${count})`
+          btn.addEventListener('click', () => switchTab(cat))
+          tabRow.appendChild(btn)
+        })
+      }
+
+      function switchTab(cat) {
+        currentFilter = cat
+        renderTabs()
+        const subset =
+          cat === 'all' ? allWrong : allWrong.filter((q) => q.category === cat)
+        currentQuestions = shuffle(subset)
+        renderQuestions(currentQuestions)
+        resetForm()
+      }
+
+      // ── 문제 렌더 ──
+      function renderQuestions(questions) {
+        const container = document.getElementById('wn-questions')
+        container.innerHTML = ''
+
+        if (questions.length === 0) {
+          container.innerHTML = `<p style="text-align:center; color:var(--muted); padding: 32px 0;">이 분야의 오답이 없습니다.</p>`
+          return
+        }
+
+        questions.forEach((q, idx) => {
+          const article = document.createElement('article')
+          article.className = 'wn-question reveal'
+          article.dataset.correct = q.correct
+
+          const uniqueName = `wn_q_${idx}_${Date.now()}`
+          article.dataset.radioName = uniqueName
+
+          const shuffledOpts = shuffle(q.options)
+          const catLabel = CAT_LABEL[q.category] || q.category || ''
+
+          article.innerHTML = `
+            <div style="margin-bottom:10px;">
+              <span style="font-size:0.75rem; font-weight:900; padding:3px 9px; border-radius:999px;
+                border:1px solid var(--line); color:var(--muted); font-family:var(--mono);">${escapeHtml(catLabel)}</span>
+            </div>
+            <h3><span class="wn-num">${idx + 1}</span>${escapeHtml(q.title)}</h3>
+            <div class="wn-options">
+              ${shuffledOpts
+                .map(
+                  (opt) => `
+                <label>
+                  <input type="radio" name="${uniqueName}" value="${escapeHtml(opt.value || opt)}" />
+                  ${escapeHtml(opt.text || opt)}
+                </label>
+              `,
+                )
+                .join('')}
+            </div>
+          `
+          container.appendChild(article)
+          requestAnimationFrame(() => article.classList.add('visible'))
+        })
+      }
+
+      function resetForm() {
+        document.getElementById('wn-result').classList.remove('show')
+        document.getElementById('wn-submit').disabled = false
+        document.getElementById('wn-actions').hidden = true
+      }
+
+      // ── 채점 ──
+      function initFormEvents(user, storageKey) {
+        document.getElementById('wn-form').addEventListener('submit', (e) => {
+          e.preventDefault()
+
+          const articles = document.querySelectorAll('.wn-question')
+          let score = 0,
+            unanswered = 0
+
+          articles.forEach((article) => {
+            const radioName = article.dataset.radioName
+            const correct = article.dataset.correct
+            const selected = document.querySelector(
+              `input[name="${radioName}"]:checked`,
+            )
+
+            article.querySelector('.wn-badge')?.remove()
+            article.querySelector('.wn-explanation')?.remove()
+            article
+              .querySelectorAll('.wn-options label')
+              .forEach((l) => l.classList.remove('is-correct', 'is-wrong'))
+            article.classList.remove('correct', 'wrong')
+
+            if (!selected) {
+              unanswered++
+              return
+            }
+
+            const isCorrect = selected.value === correct
+            article.classList.toggle('correct', isCorrect)
+            article.classList.toggle('wrong', !isCorrect)
+            if (isCorrect) score++
+
+            const badge = document.createElement('div')
+            badge.className = `wn-badge ${isCorrect ? 'correct' : 'wrong'}`
+            badge.textContent = isCorrect ? '✅ 정답' : '❌ 오답'
+            article.insertBefore(badge, article.firstChild)
+
+            article.querySelectorAll('.wn-options label').forEach((label) => {
+              const input = label.querySelector('input')
+              if (!input) return
+              if (input.value === correct) label.classList.add('is-correct')
+              else if (input === selected && !isCorrect)
+                label.classList.add('is-wrong')
+            })
+
+            if (!isCorrect) {
+              requestAnimationFrame(() => {
+                article.classList.add('quiz-shake')
+                article.addEventListener(
+                  'animationend',
+                  () => article.classList.remove('quiz-shake'),
+                  { once: true },
+                )
+              })
+            }
+
+            const qData = currentQuestions.find((q) => q.correct === correct)
+            if (qData?.explanation) {
+              const expl = document.createElement('div')
+              expl.className = 'wn-explanation'
+              expl.innerHTML = `<strong>💡 해설:</strong> ${qData.explanation}`
+              article.appendChild(expl)
+            }
+
+            article
+              .querySelectorAll('input[type="radio"]')
+              .forEach((i) => (i.disabled = true))
+          })
+
+          if (unanswered > 0) {
+            showResult(`⚠️ ${unanswered}문제가 미선택 상태입니다.`, false)
+            return
+          }
+
+          // 맞힌 문제만 오답 목록에서 제거
+          const solvedCorrects = new Set()
+          articles.forEach((article) => {
+            const radioName = article.dataset.radioName
+            const correct = article.dataset.correct
+            const selected = document.querySelector(
+              `input[name="${radioName}"]:checked`,
+            )
+            if (selected && selected.value === correct)
+              solvedCorrects.add(correct)
+          })
+
+          allWrong = allWrong.filter((q) => !solvedCorrects.has(q.correct))
+          if (allWrong.length > 0) {
+            localStorage.setItem(storageKey, JSON.stringify(allWrong))
+          } else {
+            localStorage.removeItem(storageKey)
+          }
+          renderTabs()
+
+          const total = articles.length
+          const percent = Math.round((score / total) * 100)
+          let msg =
+            score === total
+              ? `🎉 완벽! ${total}문제 모두 정답입니다! (100%)`
+              : `${total}문제 중 <strong>${score}문제 정답 (${percent}%)</strong>`
+
+          showResult(msg, true)
+          document.getElementById('wn-submit').disabled = true
+          document.getElementById('wn-actions').hidden = false
+          document
+            .getElementById('wn-actions')
+            .scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        })
+
+        document.getElementById('wn-retry').addEventListener('click', () => {
+          currentQuestions = shuffle(currentQuestions)
+          renderQuestions(currentQuestions)
+          resetForm()
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        })
+      }
+
+      function showResult(msg, scroll) {
+        const el = document.getElementById('wn-result')
+        el.innerHTML = msg
+        el.classList.add('show')
+        if (scroll) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+
+      function initWrongNotes() {
+        const user = localStorage.getItem('wp-logged-in-user')
+
+        // 비로그인 시 차단
+        if (!user) {
+          document.getElementById('wn-empty').hidden = false
+          document.getElementById('wn-empty').innerHTML = `
+            <div class="wn-empty-icon">🔒</div>
+            <p style="font-weight:800; font-size:1.05rem;">로그인이 필요합니다.</p>
+            <p style="color:var(--muted-2); font-size:0.88rem; margin-top:4px;">오답노트는 로그인 후 사용할 수 있습니다.</p>
+            <div class="button-row" style="justify-content:center; margin-top:20px;">
+              <a class="button primary" href="login.html">로그인하러 가기</a>
+            </div>
+          `
+          return
+        }
+
+        const storageKey = `wp-wrong-answers-${user}`
+        const raw = localStorage.getItem(storageKey)
+        allWrong = raw ? JSON.parse(raw) : []
+
+        if (!allWrong || allWrong.length === 0) {
+          document.getElementById('wn-empty').hidden = false
+          return
+        }
+
+        document.getElementById('wn-content').hidden = false
+        renderTabs()
+        currentQuestions = shuffle(allWrong)
+        renderQuestions(currentQuestions)
+        initFormEvents(user, storageKey)
+      }
+
+      document.addEventListener('DOMContentLoaded', initWrongNotes)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+/* 문법 페이지 레이아웃 (Security 페이지 스타일 이식) */
+.grammar-content {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+  align-items: flex-start; /* 사이드바 고정용 */
+}
+
+/* 1. 사이드바 메뉴 디자인 */
+.side-menu {
+  flex: 1;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 100px;
+  border-top: 5px solid #007bff;
+}
+
+.side-menu h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.side-menu ul {
+  list-style: none;
+}
+.side-menu li {
+  margin-bottom: 12px;
+}
+
+.side-menu a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.side-menu a:hover {
+  color: #007bff;
+  padding-left: 5px;
+}
+
+/* 2. 메인 본문 영역 */
+.main-content {
+  flex: 3;
+}
+
+/* 보안 페이지와 동일한 카드 스타일 */
+.vuln-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #007bff;
+}
+
+.vuln-header {
+  margin-bottom: 20px;
+}
+
+/* 배지 스타일 */
+.risk-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+/* 어두운 코드 박스 */
+.code-box {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+  margin: 15px 0;
+  font-family: 'Consolas', monospace;
+  border-radius: 4px;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+/* 팁 박스 */
+.tip-box {
+  background-color: #e7f3ff;
+  border-left: 5px solid #74b9ff;
+  padding: 15px 20px;
+  margin-top: 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+/* 반응형 모바일 대응 */
+@media (max-width: 900px) {
+  .grammar-content {
+    flex-direction: column;
+  }
+  .side-menu {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .side-menu {
+    width: 250px;
+    position: sticky; /* 화면에 고정 */
+    top: 20px;
+    height: 100vh; /* 화면 높이만큼 설정 */
+    overflow-y: auto; /* 내부 스크롤 허용 */
+  }
+}

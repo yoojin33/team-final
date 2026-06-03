@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>즐겨찾기 | Web-Pedia</title>
+    <meta
+      name="description"
+      content="내가 저장한 즐겨찾기 학습 카드를 확인합니다."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">WP</span>
+          <span>Web-<span>Pedia</span></span>
+        </a>
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">FAVORITES</p>
+        <h1>내 <span>즐겨찾기</span></h1>
+        <p>별표로 저장한 학습 카드들을 카테고리별로 모아볼 수 있습니다.</p>
+      </section>
+
+      <!-- 비로그인 안내 -->
+      <section class="section compact" id="fav-login-required" hidden>
+        <div class="callout warning reveal">
+          <strong>로그인이 필요합니다</strong>
+          <p>즐겨찾기는 로그인 후 사용할 수 있습니다.</p>
+          <div class="button-row" style="margin-top: 14px">
+            <a class="button primary" href="login.html">로그인하러 가기</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 즐겨찾기 본문 (로그인 시) -->
+      <section class="section compact" id="fav-content" hidden>
+        <!-- 카테고리 탭 -->
+        <div class="fav-tab-row reveal" id="fav-tabs">
+          <button class="fav-tab active" type="button" data-fav-tab="all">
+            전체
+          </button>
+          <button class="fav-tab" type="button" data-fav-tab="grammar">
+            웹 문법
+          </button>
+          <button class="fav-tab" type="button" data-fav-tab="security">
+            보안 취약점
+          </button>
+          <button class="fav-tab" type="button" data-fav-tab="secure-coding">
+            Secure Coding
+          </button>
+          <button class="fav-tab" type="button" data-fav-tab="owasp">
+            OWASP Top 10
+          </button>
+        </div>
+
+        <!-- 카드 목록 -->
+        <div id="fav-grid" style="margin-top: 24px"></div>
+
+        <!-- 빈 상태 -->
+        <div class="fav-empty" id="fav-empty" hidden>
+          <div class="fav-empty-icon">☆</div>
+          <p>이 카테고리에 저장된 즐겨찾기가 없습니다.</p>
+          <p style="color: var(--muted-2); font-size: 0.88rem">
+            학습 카드의 별표 버튼을 눌러 추가해보세요.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>내 즐겨찾기</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+
+    <script>
+      // 카테고리 레이블 매핑
+      const SOURCE_LABEL = {
+        grammar: '웹 문법',
+        security: '보안 취약점',
+        'secure-coding': 'Secure Coding',
+        owasp: 'OWASP Top 10',
+      }
+
+      const SOURCE_LINK = {
+        grammar: 'grammar.html',
+        security: 'security.html',
+        'secure-coding': 'secure-coding.html',
+        owasp: 'security-OWASP.html',
+      }
+
+      const SOURCE_BADGE_COLOR = {
+        grammar: 'var(--cyan)',
+        security: 'var(--red)',
+        'secure-coding': 'var(--green)',
+        owasp: 'var(--yellow)',
+      }
+
+      // 보안 취약점 서브카테고리
+      const SECURITY_CAT_LABEL = {
+        input: '입력값',
+        session: '세션',
+        access: '권한',
+      }
+      const SECURITY_CAT_ORDER = ['input', 'session', 'access']
+      const SECURITY_CAT_PRIORITY = ['input', 'session', 'access']
+
+      function getSecurityPrimaryCategory(categoryStr) {
+        const cats = (categoryStr || '')
+          .split(' ')
+          .map((c) => c.trim())
+          .filter(Boolean)
+        for (const prio of SECURITY_CAT_PRIORITY) {
+          if (cats.includes(prio)) return prio
+        }
+        return cats[0] || ''
+      }
+
+      function renderSecuritySubcategories(container, subset) {
+        SECURITY_CAT_ORDER.forEach((cat) => {
+          const unique = subset.filter(
+            (f) => getSecurityPrimaryCategory(f.category) === cat,
+          )
+          if (unique.length === 0) return
+          container.appendChild(makeDivider(SECURITY_CAT_LABEL[cat] || cat))
+          const grid = document.createElement('div')
+          grid.className = 'grid three fav-sub-grid'
+          unique.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+          container.appendChild(grid)
+        })
+        const uncategorized = subset.filter(
+          (f) =>
+            !SECURITY_CAT_ORDER.includes(
+              getSecurityPrimaryCategory(f.category),
+            ),
+        )
+        if (uncategorized.length > 0) {
+          container.appendChild(makeDivider('기타'))
+          const grid = document.createElement('div')
+          grid.className = 'grid three fav-sub-grid'
+          uncategorized.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+          container.appendChild(grid)
+        }
+      }
+
+      function getFavKey() {
+        const user = localStorage.getItem('wp-logged-in-user')
+        return user ? `wp-favorites-${user}` : null
+      }
+
+      function getFavorites() {
+        const key = getFavKey()
+        if (!key) return []
+        return JSON.parse(localStorage.getItem(key)) || []
+      }
+
+      function saveFavorites(arr) {
+        const key = getFavKey()
+        if (!key) return
+        localStorage.setItem(key, JSON.stringify(arr))
+      }
+
+      function removeFavorite(id) {
+        const favs = getFavorites().filter((f) => f.id !== id)
+        saveFavorites(favs)
+      }
+
+      // 카드의 대표 카테고리 결정 (우선순위: html > js > responsive > css)
+      const GRAMMAR_CAT_PRIORITY = ['html', 'js', 'responsive', 'css']
+
+      function getPrimaryCategory(categoryStr) {
+        const cats = (categoryStr || '')
+          .split(' ')
+          .map((c) => c.trim())
+          .filter(Boolean)
+        for (const prio of GRAMMAR_CAT_PRIORITY) {
+          if (cats.includes(prio)) return prio
+        }
+        return cats[0] || ''
+      }
+      const GRAMMAR_CAT_LABEL = {
+        html: 'HTML',
+        css: 'CSS',
+        responsive: '반응형',
+        js: 'JavaScript',
+      }
+      const GRAMMAR_CAT_ORDER = ['html', 'css', 'responsive', 'js']
+
+      function makeCard(fav, showSourceBadge) {
+        const source = fav.source || 'grammar'
+        const label = SOURCE_LABEL[source] || source
+        const link = SOURCE_LINK[source] || '#'
+        const color = SOURCE_BADGE_COLOR[source] || 'var(--cyan)'
+
+        const card = document.createElement('article')
+        card.className = 'card fav-card reveal'
+        card.innerHTML = `
+          ${showSourceBadge ? `<div class="fav-card-badge" style="--badge-color: ${color}">${label}</div>` : ''}
+          <h3 class="fav-card-title">${fav.title}</h3>
+          <p class="fav-card-desc">${fav.desc || ''}</p>
+          <div class="fav-card-actions">
+            <a class="small-link" href="${link}">원본 보기 →</a>
+            <button class="small-link fav-remove-btn" type="button" data-fav-remove="${fav.id}" title="즐겨찾기 해제">★ 해제</button>
+          </div>
+        `
+        requestAnimationFrame(() => card.classList.add('visible'))
+        return card
+      }
+
+      function makeDivider(label) {
+        const wrap = document.createElement('div')
+        wrap.className = 'fav-divider-wrap'
+        wrap.innerHTML = `<div class="fav-divider"><span>${label}</span></div>`
+        return wrap
+      }
+
+      // ── 서브카테고리 렌더 헬퍼 ──
+      function renderSubcategories(
+        container,
+        subset,
+        catOrder,
+        catLabel,
+        getPrimary,
+      ) {
+        catOrder.forEach((cat) => {
+          const unique = subset.filter((f) => getPrimary(f.category) === cat)
+          if (unique.length === 0) return
+          container.appendChild(makeDivider(catLabel[cat] || cat))
+          const grid = document.createElement('div')
+          grid.className = 'grid three fav-sub-grid'
+          unique.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+          container.appendChild(grid)
+        })
+        // 분류 안 된 것
+        const uncategorized = subset.filter(
+          (f) => !catOrder.includes(getPrimary(f.category)),
+        )
+        if (uncategorized.length > 0) {
+          container.appendChild(makeDivider('기타'))
+          const grid = document.createElement('div')
+          grid.className = 'grid three fav-sub-grid'
+          uncategorized.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+          container.appendChild(grid)
+        }
+      }
+
+      function renderCards(filter) {
+        const container = document.getElementById('fav-grid')
+        const empty = document.getElementById('fav-empty')
+        let favs = getFavorites()
+
+        if (filter !== 'all') favs = favs.filter((f) => f.source === filter)
+
+        container.innerHTML = ''
+
+        if (favs.length === 0) {
+          empty.hidden = false
+          return
+        }
+        empty.hidden = true
+
+        if (filter === 'grammar') {
+          // HTML / CSS / 반응형 / JavaScript 구분선
+          renderSubcategories(
+            container,
+            favs,
+            GRAMMAR_CAT_ORDER,
+            GRAMMAR_CAT_LABEL,
+            getPrimaryCategory,
+          )
+        } else if (filter === 'security') {
+          // 입력값 / 세션 / 권한 구분선
+          renderSubcategories(
+            container,
+            favs,
+            SECURITY_CAT_ORDER,
+            SECURITY_CAT_LABEL,
+            getSecurityPrimaryCategory,
+          )
+        } else if (filter === 'all') {
+          // 전체: source별 큰 구분선, grammar·security는 내부 서브 구분선 포함
+          const sources = ['grammar', 'security', 'secure-coding', 'owasp']
+          sources.forEach((src) => {
+            const subset = favs.filter((f) => f.source === src)
+            if (subset.length === 0) return
+
+            const srcColor = SOURCE_BADGE_COLOR[src] || 'var(--cyan)'
+            container.appendChild(
+              makeDivider(
+                `<span style="color:${srcColor}">${SOURCE_LABEL[src]}</span>`,
+              ),
+            )
+
+            if (src === 'grammar') {
+              GRAMMAR_CAT_ORDER.forEach((cat) => {
+                const unique = subset.filter(
+                  (f) => getPrimaryCategory(f.category) === cat,
+                )
+                if (unique.length === 0) return
+                const subDiv = makeDivider(
+                  `&nbsp;&nbsp;└ ${GRAMMAR_CAT_LABEL[cat] || cat}`,
+                )
+                subDiv
+                  .querySelector('.fav-divider')
+                  .classList.add('fav-divider-sub')
+                container.appendChild(subDiv)
+                const grid = document.createElement('div')
+                grid.className = 'grid three fav-sub-grid'
+                unique.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+                container.appendChild(grid)
+              })
+            } else if (src === 'security') {
+              SECURITY_CAT_ORDER.forEach((cat) => {
+                const unique = subset.filter(
+                  (f) => getSecurityPrimaryCategory(f.category) === cat,
+                )
+                if (unique.length === 0) return
+                const subDiv = makeDivider(
+                  `&nbsp;&nbsp;└ ${SECURITY_CAT_LABEL[cat] || cat}`,
+                )
+                subDiv
+                  .querySelector('.fav-divider')
+                  .classList.add('fav-divider-sub')
+                container.appendChild(subDiv)
+                const grid = document.createElement('div')
+                grid.className = 'grid three fav-sub-grid'
+                unique.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+                container.appendChild(grid)
+              })
+            } else {
+              const grid = document.createElement('div')
+              grid.className = 'grid three fav-sub-grid'
+              subset.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+              container.appendChild(grid)
+            }
+          })
+        } else {
+          // secure-coding, owasp: 구분선 없이 그리드만
+          const grid = document.createElement('div')
+          grid.className = 'grid three fav-sub-grid'
+          favs.forEach((fav) => grid.appendChild(makeCard(fav, false)))
+          container.appendChild(grid)
+        }
+
+        // 해제 버튼 이벤트
+        container.querySelectorAll('[data-fav-remove]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            removeFavorite(btn.dataset.favRemove)
+            renderCards(currentFilter)
+          })
+        })
+      }
+
+      let currentFilter = 'all'
+
+      function initFavPage() {
+        const user = localStorage.getItem('wp-logged-in-user')
+
+        if (!user) {
+          document.getElementById('fav-login-required').hidden = false
+          return
+        }
+
+        document.getElementById('fav-content').hidden = false
+        renderCards('all')
+
+        // 탭 이벤트
+        document.querySelectorAll('[data-fav-tab]').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            document
+              .querySelectorAll('[data-fav-tab]')
+              .forEach((t) => t.classList.remove('active'))
+            tab.classList.add('active')
+            currentFilter = tab.dataset.favTab
+            renderCards(currentFilter)
+          })
+        })
+      }
+
+      document.addEventListener('DOMContentLoaded', initFavPage)
+    </script>
+  </body>
+</html>

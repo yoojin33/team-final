@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>웹 문법 | Web-Pedia</title>
+    <meta
+      name="description"
+      content="HTML과 CSS의 핵심 문법, 시맨틱 태그, 선택자, 박스 모델, 반응형 레이아웃을 정리합니다."
+    />
+    <meta name="fav-source" content="grammar" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="주요 메뉴">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">WP</span
+          ><span>Web-<span>Pedia</span></span></a
+        >
+        <ul class="nav-menu" data-nav-menu>
+          <li><a href="index.html" data-nav-link>홈</a></li>
+          <li><a href="grammar.html" data-nav-link>웹 문법</a></li>
+          <li><a href="security.html" data-nav-link>보안 취약점</a></li>
+          <li><a href="secure-coding.html" data-nav-link>Secure Coding</a></li>
+          <li><a href="quiz.html" data-nav-link>퀴즈</a></li>
+          <li><a href="team.html" data-nav-link>팀 소개</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>
+            라이트
+          </button>
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+          >
+            메뉴
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero reveal">
+        <p class="crumb">WEB STANDARD</p>
+        <h1>웹 표준 제작 <span>문법 가이드</span></h1>
+        <p>
+          웹 페이지를 만드는 가장 기본 재료인 HTML과 CSS를 기능별로
+          정리했습니다. 검색과 필터를 이용해 필요한 개념을 빠르게 찾아볼 수
+          있습니다.
+        </p>
+      </section>
+
+      <section class="section compact">
+        <div class="toolbar reveal" data-filter-group="grammar">
+          <input
+            class="search-box"
+            type="search"
+            placeholder="문법 키워드 검색: semantic, flex, form..."
+            data-search="grammar"
+            aria-label="웹 문법 검색"
+          />
+          <button class="filter-button active" type="button" data-filter="all">
+            전체
+          </button>
+          <button class="filter-button" type="button" data-filter="html">
+            HTML
+          </button>
+          <button class="filter-button" type="button" data-filter="css">
+            CSS
+          </button>
+          <button class="filter-button" type="button" data-filter="responsive">
+            반응형
+          </button>
+          <button class="filter-button" type="button" data-filter="js">
+            JavaScript
+          </button>
+        </div>
+
+        <div class="grid three">
+          <details
+            data-fav-id="grammar-1"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="html"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">HTML</span><span class="tag good">구조</span>
+              </div>
+              <h3>시맨틱 태그</h3>
+              <p>
+                header, nav, main, section, article, footer처럼 의미가 있는
+                태그로 문서 구조를 표현합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                시맨틱 태그는 화면 모양이 아니라 콘텐츠의 역할을 알려줍니다.
+                검색 엔진, 스크린 리더, 협업자가 문서 구조를 이해하기
+                쉬워집니다.
+              </p>
+              <pre><code>&lt;header&gt;사이트 제목&lt;/header&gt;
+&lt;nav&gt;주요 메뉴&lt;/nav&gt;
+&lt;main&gt;
+  &lt;section&gt;
+    &lt;h2&gt;웹 문법&lt;/h2&gt;
+    &lt;article&gt;HTML 설명 카드&lt;/article&gt;
+  &lt;/section&gt;
+&lt;/main&gt;</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-2"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="html"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">HTML</span><span class="tag good">폼</span>
+              </div>
+              <h3>폼과 입력 요소</h3>
+              <p>
+                label, input, select, textarea를 연결하고 입력 타입과 기본 검증
+                속성을 사용합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                폼은 사용자 입력을 받는 영역입니다. label의 for와 input의 id를
+                맞추면 클릭 영역과 접근성이 좋아지고, type은 모바일 키보드와
+                기본 검증에 영향을 줍니다.
+              </p>
+              <pre><code>&lt;form&gt;
+  &lt;label for="email"&gt;이메일&lt;/label&gt;
+  &lt;input id="email" type="email" required autocomplete="email"&gt;
+  &lt;button type="submit"&gt;제출&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-3"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="html"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">HTML</span><span class="tag">접근성</span>
+              </div>
+              <h3>대체 텍스트와 제목 구조</h3>
+              <p>
+                이미지에는 상황에 맞는 alt를 제공하고, h1부터 h6까지의 제목
+                계층을 일관되게 구성합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                alt는 이미지를 볼 수 없는 사용자에게 정보를 전달합니다. 제목
+                태그는 글자 크기 조절용이 아니라 문서의 목차 역할로 사용합니다.
+              </p>
+              <pre><code>&lt;h1&gt;Web-Pedia&lt;/h1&gt;
+&lt;h2&gt;웹 보안 취약점&lt;/h2&gt;
+&lt;img src="image/owasp-logo.png" alt="OWASP 로고"&gt;</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-4"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="css"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">CSS</span><span class="tag good">선택자</span>
+              </div>
+              <h3>선택자와 우선순위</h3>
+              <p>
+                태그, 클래스, 아이디, 속성 선택자의 역할을 구분하고 우선순위를
+                관리합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                CSS는 더 구체적인 선택자가 우선 적용됩니다. 유지보수하기 쉬운
+                사이트는 대부분 클래스 중심으로 스타일을 작성합니다.
+              </p>
+              <pre><code>/* 추천: 역할이 드러나는 클래스 */
+.security-card {
+  border: 1px solid var(--line);
+}
+
+/* 주의: 너무 강한 선택자는 덮어쓰기 어렵다 */
+#main .card article h3 { color: red; }</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-5"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="css"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">CSS</span><span class="tag">레이아웃</span>
+              </div>
+              <h3>박스 모델</h3>
+              <p>
+                content, padding, border, margin의 차이를 이해하면 요소의 실제
+                크기와 간격을 예측할 수 있습니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                box-sizing: border-box를 사용하면 width 안에 padding과 border가
+                포함되어 레이아웃 계산이 쉬워집니다.
+              </p>
+              <pre><code>* {
+  box-sizing: border-box;
+}
+
+.card {
+  width: 320px;
+  padding: 24px;
+  border: 1px solid #ddd;
+  margin: 16px;
+}</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-6"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="css responsive"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">CSS</span
+                ><span class="tag good">Flex/Grid</span>
+              </div>
+              <h3>Flexbox와 Grid</h3>
+              <p>
+                Flexbox는 한 방향 정렬, Grid는 행과 열을 모두 다루는 2차원
+                레이아웃에 적합합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                메뉴나 버튼 줄처럼 한 줄 흐름은 flex, 카드 목록처럼 행과 열이
+                필요한 화면은 grid가 편합니다.
+              </p>
+              <pre><code>.nav-menu {
+  display: flex;
+  gap: 16px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-7"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="responsive css"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">반응형</span
+                ><span class="tag">Media Query</span>
+              </div>
+              <h3>반응형 웹</h3>
+              <p>
+                viewport, 상대 단위, media query를 조합해 데스크톱과 모바일에서
+                모두 읽기 좋은 화면을 만듭니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                모바일에서는 3열 카드가 너무 좁아지므로 화면 폭에 따라 1열로
+                바꾸는 식으로 설계합니다.
+              </p>
+              <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+@media (max-width: 760px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-8"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="js"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span
+                ><span class="tag good">DOM</span>
+              </div>
+              <h3>DOM 선택과 이벤트</h3>
+              <p>
+                JavaScript는 HTML 요소를 선택하고 이벤트에 반응해 화면을
+                동적으로 바꿉니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                querySelector로 요소를 찾고 addEventListener로 클릭, 입력, 제출
+                같은 사용자 행동에 반응합니다. 이 사이트의 검색, 필터, 퀴즈도
+                같은 원리입니다.
+              </p>
+              <pre><code>const button = document.querySelector(".theme-toggle");
+
+button.addEventListener("click", () =&gt; {
+  document.body.classList.toggle("light-theme");
+});</code></pre>
+            </div>
+          </details>
+          <details
+            data-fav-id="grammar-9"
+            class="card term learn-card filter-card search-item reveal"
+            data-filter-card="grammar"
+            data-category="js"
+            data-search-item="grammar"
+          >
+            <summary>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span
+                ><span class="tag">조건문</span>
+              </div>
+              <h3>변수, 조건문, 반복문</h3>
+              <p>
+                값을 저장하고 조건에 따라 다른 코드를 실행하며, 여러 요소를 반복
+                처리합니다.
+              </p>
+            </summary>
+            <div class="detail-panel">
+              <h4>문법 설명</h4>
+              <p>
+                let과 const로 변수를 만들고, if로 조건을 나누며, forEach로 카드
+                목록 같은 여러 요소를 한 번에 처리할 수 있습니다.
+              </p>
+              <pre><code>const cards = document.querySelectorAll(".card");
+
+cards.forEach((card) =&gt; {
+  if (card.textContent.includes("XSS")) {
+    card.classList.add("highlight");
+  }
+});</code></pre>
+            </div>
+          </details>
+        </div>
+        <p class="source-note reveal">
+          참고 기준:
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/HTML"
+            target="_blank"
+            rel="noreferrer"
+            >MDN HTML</a
+          >,
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+            target="_blank"
+            rel="noreferrer"
+            >MDN JavaScript Guide</a
+          >
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="split">
+          <div class="section-title reveal">
+            <h2>코드로 보는 핵심 문법</h2>
+            <p>
+              탭을 눌러 HTML과 CSS 예시를 바꿔볼 수 있습니다. 복사 버튼은
+              JavaScript로 동작합니다.
+            </p>
+          </div>
+          <div class="lab-panel reveal" data-code-tabs>
+            <div class="panel-topbar">
+              <div class="traffic" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <span>grammar-example</span>
+            </div>
+            <div class="code-tabs" style="padding: 18px 18px 0">
+              <button
+                class="code-tab active"
+                type="button"
+                data-code-tab="html"
+              >
+                HTML
+              </button>
+              <button class="code-tab" type="button" data-code-tab="css">
+                CSS
+              </button>
+            </div>
+            <div class="code-panel active" data-code-panel="html">
+              <button
+                class="copy-button"
+                type="button"
+                data-copy-target="#grammar-html-code"
+              >
+                복사
+              </button>
+              <pre
+                class="code-window"
+              ><code id="grammar-html-code">&lt;main class="learning-card"&gt;
+  &lt;h1&gt;Web-Pedia&lt;/h1&gt;
+  &lt;p&gt;웹 표준과 보안을 함께 학습합니다.&lt;/p&gt;
+  &lt;a href="security.html"&gt;취약점 보기&lt;/a&gt;
+&lt;/main&gt;</code></pre>
+            </div>
+            <div class="code-panel" data-code-panel="css">
+              <button
+                class="copy-button"
+                type="button"
+                data-copy-target="#grammar-css-code"
+              >
+                복사
+              </button>
+              <pre
+                class="code-window"
+              ><code id="grammar-css-code">.learning-card {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section compact">
+        <div class="grid two">
+          <article class="card reveal">
+            <h3>문법 학습 팁</h3>
+            <ul class="card-list">
+              <li>
+                HTML은 의미 구조를 먼저 잡고, CSS는 그 구조를 꾸미는 역할로
+                분리합니다.
+              </li>
+              <li>
+                반복되는 색상, 간격, 글꼴은 CSS 변수로 관리하면 유지보수가
+                쉬워집니다.
+              </li>
+              <li>
+                브라우저 개발자 도구로 박스 모델과 적용된 스타일을 확인하는
+                습관을 들입니다.
+              </li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <h3>다음 학습 연결</h3>
+            <p>
+              문법을 이해했다면, 사용자가 입력한 값이 어떻게 보안 취약점으로
+              이어지는지 살펴볼 차례입니다.
+            </p>
+            <div class="button-row">
+              <a class="button primary" href="security.html"
+                >보안 취약점으로 이동</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <strong>Web-Pedia</strong>
+        <span>웹 표준 제작 문법 정리</span>
+      </div>
+    </footer>
+
+    <button
+      class="back-to-top"
+      type="button"
+      data-back-to-top
+      aria-label="맨 위로 이동"
+    >
+      TOP
+    </button>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+/* 보안 페이지 전용 스타일 */
+
+/* 위험 등급 배지 */
+.risk-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.high {
+  background-color: #ff4d4d;
+} /* 고위험: 빨간색 */
+.medium {
+  background-color: #ffa502;
+} /* 중위험: 주황색 */
+
+/* 취약점 및 보안 가이드 카드 */
+.vuln-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #007bff; /* 기본 포인트 컬러 */
+  transition: transform 0.3s ease;
+}
+
+.vuln-card:hover {
+  transform: translateY(-5px); /* 마우스 올리면 살짝 들리는 효과 */
+}
+
+.vuln-header h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.vuln-body p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* 공격 원리 및 코드 박스 */
+.concept-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.concept-box h4 {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+/* W3Schools 스타일 코드 박스 */
+.code-box {
+  background-color: #2d2d2d; /* 코드 박스는 어두운 테마가 멋져요 */
+  color: #f8f8f2;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+  margin: 15px 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  border-radius: 4px;
+  overflow-x: auto; /* 코드가 길면 옆으로 스크롤 */
+}
+
+/* 강조 텍스트 (빨간색) */
+.highlight {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* 제목 섹션 스타일 */
+.intro-section {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.warning-title {
+  color: #d63031; /* 해킹 페이지용 붉은 제목 */
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
