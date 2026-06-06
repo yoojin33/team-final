@@ -1021,6 +1021,34 @@ body.light-theme .quiz-section-header {
   font-weight: 900;
 }
 
+/* 직접 추가한 퀴즈 카드가 테마에 맞게 배경과 글자색이 바뀌도록 설정 */
+#my-custom-quiz-list .quiz-card,
+#my-custom-quiz-list > div[style*='background: white'],
+#my-custom-quiz-list > div {
+  background-color: var(
+    --surface
+  ) !important; /* 다크모드일 땐 어두운색, 라이트모드일 땐 밝은색 */
+  color: var(--text) !important; /* 글자 색상 테마 동기화 */
+  border: 1px solid var(--line) !important; /* 테두리 선도 자연스럽게 처리 */
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* 내부 문제 텍스트 및 보기 글자색 강제 지정 */
+#my-custom-quiz-list h3,
+#my-custom-quiz-list h4,
+#my-custom-quiz-list label,
+#my-custom-quiz-list p {
+  color: var(--text) !important;
+}
+
+/* 성공/결과 메시지 텍스트 가독성 확보 */
+#my-custom-quiz-list .success-msg,
+#my-custom-quiz-list .error-msg {
+  font-weight: 600;
+}
+
 .progress-shell {
   margin: 0 0 18px;
 }
